@@ -13,7 +13,7 @@
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200');
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://raw.githubusercontent.com/eabdo5110-sudo/okka-menu/main/banner.jpg');
             background-size: cover;
             background-position: center;
         }
@@ -43,15 +43,13 @@
     <header class="bg-okka-900 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="bg-amber-600 p-2.5 rounded-xl text-white font-bold text-xl shadow-inner flex items-center justify-center">
-                    <i class="fa-solid fa-mug-hot"></i>
+                <!-- Authentic Logo Style matching user image -->
+                <div class="bg-amber-600 px-3 py-1.5 rounded-xl text-white font-black text-lg shadow-inner flex items-center gap-1">
+                    <span class="text-amber-200 text-xs">☕</span> OKKA
                 </div>
                 <div class="flex flex-col">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="text-xl font-black tracking-wider text-amber-500">OKKA</span>
-                        <span class="text-white text-sm font-semibold tracking-wide">Coffee</span>
-                    </div>
-                    <span class="text-xs text-stone-300 font-medium lang-text" data-ar="مختصات القهوة والمخابوزات الطازجة" data-en="Specialty Coffee & Fresh Bakery">مختصات القهوة والمخابوزات الطازجة</span>
+                    <span class="text-white text-xs font-semibold tracking-widest uppercase">Coffee</span>
+                    <span class="text-xs text-stone-300 font-medium lang-text" data-ar="مختصات القهوة والمخبوزات الطازجة" data-en="Specialty Coffee & Fresh Bakery">مختصات القهوة والمخبوزات الطازجة</span>
                 </div>
             </div>
 
@@ -72,7 +70,7 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-6xl mx-auto px-4 py-6 w-full">
         
-        <!-- Welcome Banner -->
+        <!-- Welcome Banner using real shop sign image -->
         <div class="hero-bg text-white rounded-2xl p-6 md:p-10 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 border border-amber-500/20">
             <div class="text-center md:text-right space-y-2">
                 <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30 lang-text" data-ar="مرحباً بك في وجهتك المفضلة" data-en="Welcome to Your Favorite Spot">مرحباً بك في وجهتك المفضلة</span>
@@ -88,7 +86,7 @@
             </div>
             
             <div class="bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-white/10 text-center shrink-0">
-                <p class="text-xs text-amber-300 font-bold mb-1 lang-text" data-ar="حالة الفرع" data-en="Branch Status">حالة الفرع</p>
+                <p class="text-xs text-amber-300 font-bold mb-1 lang-text" data-ar="حالة الكافيه" data-en="Cafe Status">حالة الكافيه</p>
                 <div class="flex items-center gap-2 justify-center">
                     <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
                     <span class="text-sm font-bold lang-text" data-ar="مفتوح الآن" data-en="Open Now">مفتوح الآن</span>
@@ -206,8 +204,9 @@
         }
 
         function getCategories() {
-            const cats = new Set(products.map(p => p.category));
-            return ['all', ...Array.from(cats)];
+            const customCats = JSON.parse(localStorage.getItem('okka_categories')) || [];
+            const defaultCats = [...new Set(products.map(p => p.category))];
+            return ['all', ...new Set([...defaultCats, ...customCats])];
         }
 
         function renderCategories() {

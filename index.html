@@ -3,30 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Okka | Digital Cafe Menu</title>
+    <title>Okka Cafe | Menu</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- QRCode.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Plus Jakarta Sans & Inter Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Cairo Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, .font-heading { font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Toast notification animation */
-        @keyframes slideInUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .toast-enter { animation: slideInUp 0.3s ease-out forwards; }
+        body { font-family: 'Cairo', sans-serif; }
     </style>
     <script>
         tailwind.config = {
@@ -36,7 +23,6 @@
                         okka: {
                             50: '#fdf8f6',
                             100: '#f2e8e5',
-                            200: '#eaddd7',
                             600: '#8B4513',
                             700: '#6f350f',
                             800: '#5c2c0c',
@@ -48,45 +34,30 @@
         }
     </script>
 </head>
-<body class="bg-okka-50 text-stone-800 antialiased min-h-screen flex flex-col selection:bg-amber-600 selection:text-white">
+<body class="bg-okka-50 text-stone-800 antialiased min-h-screen flex flex-col">
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
-
-    <!-- Top Header -->
-    <header class="bg-okka-900 text-white shadow-lg sticky top-0 z-40 border-b border-amber-500/20">
-        <div class="max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center gap-2">
-            <!-- Brand Logo & Name -->
+    <!-- Top Header (Clean for Customers) -->
+    <header class="bg-okka-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-br from-amber-500 to-amber-700 p-2.5 rounded-xl text-white font-bold text-xl shadow-md">
+                <div class="bg-amber-600 p-2 rounded-xl text-white font-bold text-xl shadow-inner">
                     <i class="fa-solid fa-mug-hot"></i>
                 </div>
                 <div>
-                    <h1 id="headerCafeName" class="text-xl sm:text-2xl font-extrabold tracking-tight text-amber-400">Okka</h1>
-                    <p id="headerCafeSubtitle" class="text-[11px] sm:text-xs text-stone-300">Specialty Coffee & Fresh Bakery</p>
+                    <h1 class="text-xl font-black tracking-wider text-amber-500">Okka Cafe</h1>
+                    <p class="text-xs text-stone-300">Specialty Coffee & Fresh Bakery</p>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex items-center space-x-2 sm:space-x-3">
-                <!-- Admin Button -->
-                <button onclick="openAdminLogin()" class="relative bg-stone-800 hover:bg-stone-700 text-amber-400 px-3 py-2 rounded-xl text-xs md:text-sm font-semibold border border-amber-500/30 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-sliders text-xs"></i>
-                    <span class="hidden sm:inline">Admin</span>
-                    <span id="pendingOrdersBadge" class="hidden absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-bounce">0</span>
+            <div class="flex items-center space-x-3">
+                <!-- Secret Admin Access Button -->
+                <button onclick="openAdminLogin()" class="text-stone-500 hover:text-amber-400 p-2 text-xs transition" title="Admin">
+                    <i class="fa-solid fa-lock text-xs"></i>
                 </button>
-                
-                <!-- QR Code Button -->
-                <button onclick="openQRModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-xl text-xs md:text-sm font-semibold transition flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-qrcode"></i>
-                    <span class="hidden sm:inline">Menu QR</span>
-                </button>
-                
                 <!-- Cart Button -->
-                <button onclick="toggleCart()" class="relative bg-amber-400 hover:bg-amber-500 text-okka-900 px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm transition flex items-center gap-1.5 shadow-md">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span>Cart</span>
-                    <span id="cartCount" class="bg-okka-900 text-amber-400 text-xs px-2 py-0.5 rounded-full font-extrabold">0</span>
+                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-okka-900 px-3 py-1.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart
+                    <span id="cartCount" class="bg-okka-900 text-white text-xs px-1.5 py-0.5 rounded-full">0</span>
                 </button>
             </div>
         </div>
@@ -96,439 +67,203 @@
     <main class="flex-grow max-w-6xl mx-auto px-4 py-6 w-full">
         
         <!-- Welcome Banner -->
-        <div class="relative overflow-hidden bg-gradient-to-r from-okka-900 via-okka-800 to-stone-900 text-white rounded-3xl p-6 md:p-10 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 border border-amber-500/20">
-            <div class="text-center md:text-left z-10">
-                <span class="inline-flex items-center gap-1.5 bg-amber-500/20 text-amber-300 text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-amber-500/30">
-                    <i class="fa-solid fa-sparkles"></i> Welcome to <span id="bannerBrandName">Okka</span>
-                </span>
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mt-3 mb-2 leading-tight">Crafted Coffee, Pure Perfection</h2>
-                <p class="text-stone-300 text-sm md:text-base max-w-lg leading-relaxed">Explore our curated selection of specialty brews, refreshing iced drinks, and artisan pastries. Order straight from your table.</p>
+        <div class="bg-gradient-to-r from-okka-900 to-okka-800 text-white rounded-2xl p-6 md:p-8 mb-8 shadow-lg flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30">Welcome to Okka</span>
+                <h2 class="text-2xl md:text-4xl font-black mt-2 mb-2">Authentic Coffee Experience</h2>
+                <p class="text-stone-300 text-sm md:text-base max-w-md">Enjoy our finest beverages and pastries. Order directly from your table easily.</p>
             </div>
-            
-            <div class="bg-white/10 p-5 rounded-2xl backdrop-blur-md border border-white/15 text-center min-w-[210px] z-10 shadow-inner">
-                <p class="text-xs text-amber-300 font-semibold uppercase tracking-wider mb-1.5">Store Status</p>
-                <div class="flex items-center gap-2 justify-center bg-black/30 px-3.5 py-1.5 rounded-xl">
-                    <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
-                    <span class="text-xs sm:text-sm font-bold text-emerald-300">Open for Orders</span>
+            <div class="bg-white/10 p-4 rounded-xl backdrop-blur-md border border-white/10 text-center">
+                <p class="text-xs text-amber-300 font-bold mb-1">Branch Status</p>
+                <div class="flex items-center gap-2 justify-center">
+                    <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-sm font-bold">Open for Orders</span>
                 </div>
             </div>
         </div>
 
-        <!-- Search & Category Filter Bar -->
-        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-6">
-            <!-- Categories -->
-            <div class="flex overflow-x-auto pb-1 gap-2 no-scrollbar">
-                <button onclick="filterCategory('all')" id="cat-all" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap bg-okka-800 text-white shadow-sm transition">
-                    All Items
-                </button>
-                <button onclick="filterCategory('Hot Drinks')" id="cat-Hot Drinks" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">
-                    <i class="fa-solid fa-mug-saucer mr-1.5 text-amber-700"></i> Hot Drinks
-                </button>
-                <button onclick="filterCategory('Cold Drinks')" id="cat-Cold Drinks" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">
-                    <i class="fa-solid fa-glass-water mr-1.5 text-sky-600"></i> Cold Drinks
-                </button>
-                <button onclick="filterCategory('Bakery & Desserts')" id="cat-Bakery & Desserts" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">
-                    <i class="fa-solid fa-cake-slice mr-1.5 text-rose-600"></i> Bakery & Desserts
-                </button>
-            </div>
-
-            <!-- Search Input -->
-            <div class="relative w-full md:w-72">
-                <input type="text" id="searchInput" oninput="renderMenu()" placeholder="Search coffee, drinks, desserts..." class="w-full pr-4 pl-10 py-2.5 bg-white border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:outline-none shadow-sm">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-stone-400 text-sm"></i>
-            </div>
+        <!-- Categories Filter -->
+        <div class="flex overflow-x-auto pb-3 mb-6 gap-2 no-scrollbar">
+            <button onclick="filterCategory('all')" id="cat-all" class="category-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-okka-800 text-white shadow-sm transition">All Items</button>
+            <button onclick="filterCategory('Hot Drinks')" id="cat-Hot Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">Hot Drinks</button>
+            <button onclick="filterCategory('Cold Drinks')" id="cat-Cold Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">Cold Drinks</button>
+            <button onclick="filterCategory('Desserts')" id="cat-Desserts" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">Desserts & Bakery</button>
         </div>
 
         <!-- Menu Grid -->
         <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic product cards rendered via JS -->
+            <!-- Items generated via JS -->
         </div>
 
     </main>
 
     <!-- Footer -->
     <footer class="bg-okka-900 text-stone-400 text-center py-6 border-t border-stone-800 mt-12">
-        <p class="text-sm font-semibold text-stone-300">© 2026 <span id="footerCafeName">Okka</span>. All rights reserved.</p>
-        <p class="text-xs text-stone-500 mt-1">Smart Digital Menu & Table Ordering</p>
+        <p class="text-sm font-bold">All Rights Reserved © 2026 - Okka Cafe</p>
     </footer>
 
-    <!-- Cart Slide-Over Drawer -->
-    <div id="cartDrawer" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex justify-end transition-opacity">
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
         <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl">
             <div class="bg-okka-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-bag-shopping text-amber-400"></i> Your Order Cart
-                </h3>
-                <button onclick="toggleCart()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-stone-200 flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i> Order Cart</h3>
+                <button onclick="toggleCart()" class="text-stone-300 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-4 space-y-3 divide-y divide-stone-100">
-                <!-- Dynamic cart items -->
+            <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-4 space-y-4 divide-y divide-stone-100">
+                <!-- Cart items -->
             </div>
 
             <div class="p-4 bg-stone-50 border-t border-stone-200 space-y-3">
-                <div class="flex justify-between items-center font-bold text-lg text-stone-800">
-                    <span>Total Amount:</span>
-                    <span id="cartTotal" class="text-amber-700 text-xl font-extrabold">0 EGP</span>
+                <div class="flex justify-between font-bold text-lg text-stone-800">
+                    <span>Total:</span>
+                    <span id="cartTotal" class="text-amber-700">0 EGP</span>
                 </div>
-                <button onclick="openCheckoutModal()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3.5 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2">
-                    <span>Proceed to Checkout</span>
-                    <i class="fa-solid fa-arrow-right"></i>
+                <button onclick="openCheckoutModal()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-xl font-bold transition shadow-md">
+                    Proceed to Checkout
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Checkout Modal -->
-    <div id="checkoutModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div id="checkoutModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-stone-800 flex items-center gap-2">
-                    <i class="fa-solid fa-receipt text-amber-600"></i> Order Details
-                </h3>
-                <button onclick="closeCheckoutModal()" class="text-stone-400 hover:text-stone-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <h3 class="font-bold text-lg text-stone-800">Order Details</h3>
+                <button onclick="closeCheckoutModal()" class="text-stone-400 hover:text-stone-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-bold text-stone-700 mb-1">Your Name <span class="text-red-500">*</span></label>
-                    <input type="text" id="customerName" placeholder="Enter your name..." class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                    <label class="block text-xs font-bold text-stone-600 mb-1">Customer Name</label>
+                    <input type="text" id="customerName" placeholder="Enter your name" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-stone-700 mb-1">Order Type</label>
-                    <select id="orderType" onchange="toggleTableField()" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm bg-white">
-                        <option value="Dine-In">Dine-In (Table Service)</option>
+                    <label class="block text-xs font-bold text-stone-600 mb-1">Order Type</label>
+                    <select id="orderType" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                        <option value="Dine-In">Dine-In (Table)</option>
                         <option value="Takeaway">Takeaway (Counter Pickup)</option>
                     </select>
                 </div>
-                <div id="tableFieldContainer">
-                    <label class="block text-xs font-bold text-stone-700 mb-1">Table Number / Special Notes</label>
-                    <input type="text" id="tableNo" placeholder="e.g., Table 4 / Extra hot" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1">Table No / Notes</label>
+                    <input type="text" id="tableNo" placeholder="e.g. Table 4" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
                 </div>
             </div>
-
-            <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex justify-between items-center text-sm">
-                <span class="font-semibold text-stone-700">Order Total:</span>
-                <span id="checkoutTotalDisplay" class="font-extrabold text-amber-800 text-base">0 EGP</span>
-            </div>
-
-            <div class="space-y-2.5 pt-2">
-                <button onclick="submitOrder('direct')" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2 text-sm">
-                    <i class="fa-solid fa-bell-concierge"></i> Send Order to Counter
-                </button>
-                <button onclick="submitOrder('whatsapp')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2 text-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Send Order via WhatsApp
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- QR Code & Direct Link Modal -->
-    <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center space-y-4">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-base text-stone-800 flex items-center gap-2">
-                    <i class="fa-solid fa-qrcode text-amber-600"></i> Menu QR Code & Link
-                </h3>
-                <button onclick="closeQRModal()" class="text-stone-400 hover:text-stone-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            
-            <!-- QR Code Container -->
-            <div class="bg-okka-50 p-4 rounded-2xl border-2 border-dashed border-amber-300 flex flex-col items-center justify-center">
-                <div id="qrcode" class="bg-white p-3 rounded-xl shadow-sm"></div>
-                <p id="qrCafeTitle" class="text-sm font-extrabold text-okka-900 mt-2.5 tracking-tight">Okka</p>
-                <p class="text-[11px] text-stone-500">Scan to View Menu & Order</p>
-            </div>
-            
-            <p class="text-xs text-stone-500 leading-relaxed">Scan this code with your phone camera to open the menu instantly, or download the PNG to print for your cafe tables.</p>
-            
-            <div class="space-y-2 pt-1">
-                <div class="flex gap-1.5">
-                    <input type="text" id="shareUrl" readonly class="w-full px-3 py-2 bg-stone-100 border border-stone-200 rounded-xl text-xs text-stone-600 focus:outline-none">
-                    <button onclick="copyLink()" title="Copy Link" class="bg-stone-800 hover:bg-stone-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1">
-                        <i class="fa-solid fa-copy"></i> Copy
-                    </button>
-                </div>
-                
-                <button onclick="downloadQRCode()" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-download"></i> Download QR Image (PNG)
-                </button>
-            </div>
+            <button onclick="submitOrderWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Send Order via WhatsApp
+            </button>
         </div>
     </div>
 
     <!-- Admin Login Modal -->
-    <div id="adminLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div id="adminLoginModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-stone-800 flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-amber-600"></i> Admin Login
-                </h3>
-                <button onclick="closeAdminLogin()" class="text-stone-400 hover:text-stone-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <h3 class="font-bold text-lg text-stone-800">Admin Login</h3>
+                <button onclick="closeAdminLogin()" class="text-stone-400 hover:text-stone-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1.5">Enter Admin PIN</label>
-                <input type="password" id="adminPin" onkeydown="if(event.key==='Enter') verifyAdmin()" placeholder="••••" class="w-full px-4 py-2.5 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-center tracking-widest text-lg font-bold">
+                <label class="block text-xs font-bold text-stone-600 mb-1">PIN Code</label>
+                <input type="password" id="adminPin" placeholder="Enter PIN" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
             </div>
-            <button onclick="verifyAdmin()" class="w-full bg-okka-900 hover:bg-black text-white py-3 rounded-xl font-bold transition text-sm shadow-md">
-                Unlock Dashboard
+            <button onclick="verifyAdmin()" class="w-full bg-okka-900 hover:bg-black text-white py-2.5 rounded-xl font-bold transition text-sm">
+                Login
             </button>
         </div>
     </div>
 
-    <!-- Full Admin Dashboard Modal -->
-    <div id="adminDashboardModal" class="fixed inset-0 bg-stone-100 z-50 hidden flex flex-col text-stone-800">
-        <!-- Admin Header -->
+    <!-- Admin Dashboard Modal -->
+    <div id="adminDashboardModal" class="fixed inset-0 bg-stone-900 z-50 hidden flex flex-col text-stone-800">
         <div class="bg-okka-900 text-white p-4 flex justify-between items-center shadow-md">
-            <div class="flex items-center gap-2.5">
-                <i class="fa-solid fa-gauge-high text-amber-400 text-xl"></i>
-                <h3 class="font-extrabold text-base sm:text-lg"><span id="adminHeaderBrand">Okka</span> Admin Dashboard</h3>
-            </div>
-            <button onclick="closeAdminDashboard()" class="bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
-                <span>Back to Menu</span>
-                <i class="fa-solid fa-xmark text-sm"></i>
-            </button>
+            <h3 class="font-bold text-lg"><i class="fa-solid fa-gauge-high mr-2"></i> Okka Management Dashboard</h3>
+            <button onclick="closeAdminDashboard()" class="text-stone-300 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <!-- Admin Navigation Tabs -->
-        <div class="bg-white border-b border-stone-200 px-4">
-            <div class="max-w-5xl mx-auto flex gap-2 overflow-x-auto no-scrollbar">
-                <button onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn py-3.5 px-4 text-sm font-bold border-b-2 border-amber-600 text-amber-700 whitespace-nowrap flex items-center gap-2">
-                    <i class="fa-solid fa-bell-concierge"></i> Incoming Orders
-                    <span id="tabOrdersCount" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">0</span>
-                </button>
-                <button onclick="switchAdminTab('menu')" id="tab-btn-menu" class="admin-tab-btn py-3.5 px-4 text-sm font-bold border-b-2 border-transparent text-stone-500 hover:text-stone-800 whitespace-nowrap flex items-center gap-2">
-                    <i class="fa-solid fa-mug-hot"></i> Menu Management
-                </button>
-                <button onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn py-3.5 px-4 text-sm font-bold border-b-2 border-transparent text-stone-500 hover:text-stone-800 whitespace-nowrap flex items-center gap-2">
-                    <i class="fa-solid fa-gear"></i> Cafe Settings
-                </button>
-            </div>
-        </div>
-
-        <!-- Admin Tab Contents -->
-        <div class="flex-grow overflow-y-auto p-4 md:p-6 max-w-5xl mx-auto w-full">
+        <div class="flex-grow overflow-y-auto p-4 md:p-6 max-w-5xl mx-auto w-full space-y-6">
             
-            <!-- Tab 1: Incoming Orders -->
-            <div id="admin-tab-orders" class="space-y-4">
-                <div class="flex justify-between items-center">
-                    <h4 class="font-bold text-stone-800 text-base">Customer Orders</h4>
-                    <button onclick="clearCompletedOrders()" class="text-xs bg-stone-200 hover:bg-stone-300 text-stone-700 px-3 py-1.5 rounded-lg font-bold transition">
-                        <i class="fa-solid fa-broom mr-1"></i> Clear Completed
-                    </button>
+            <!-- WhatsApp Settings Box -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
+                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-brands fa-whatsapp text-green-600 mr-1"></i> WhatsApp Orders Number</h4>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="whatsappNumberInput" placeholder="e.g. 201012345678" class="flex-grow px-3 py-2 border rounded-xl text-sm">
+                    <button onclick="saveWhatsAppNumber()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-5 py-2 rounded-xl text-sm transition">Save Number</button>
                 </div>
-                <div id="ordersListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Dynamic order cards -->
+                <p class="text-xs text-stone-400 mt-1">Enter number with country code (e.g., 20 for Egypt) without '+' or spaces.</p>
+            </div>
+
+            <!-- Add New Item -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
+                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-plus-circle text-amber-600 mr-1"></i> Add New Menu Item</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    <input type="text" id="newItemName" placeholder="Item Name" class="px-3 py-2 border rounded-xl text-sm">
+                    <select id="newItemCategory" class="px-3 py-2 border rounded-xl text-sm">
+                        <option value="Hot Drinks">Hot Drinks</option>
+                        <option value="Cold Drinks">Cold Drinks</option>
+                        <option value="Desserts">Desserts & Bakery</option>
+                    </select>
+                    <input type="number" id="newItemPrice" placeholder="Price (EGP)" class="px-3 py-2 border rounded-xl text-sm">
+                    <button onclick="addNewItem()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-xl text-sm transition">Add Item</button>
                 </div>
             </div>
 
-            <!-- Tab 2: Menu Management -->
-            <div id="admin-tab-menu" class="hidden space-y-6">
-                <!-- Add New Item -->
-                <div class="bg-white p-5 rounded-2xl shadow-xs border border-stone-200">
-                    <h4 class="font-bold text-stone-800 mb-3 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-plus-circle text-amber-600"></i> Add New Menu Item
-                    </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                        <input type="text" id="newItemName" placeholder="Item Name (e.g., Iced Mocha)" class="px-3 py-2 border border-stone-300 rounded-xl text-sm">
-                        <select id="newItemCategory" class="px-3 py-2 border border-stone-300 rounded-xl text-sm bg-white">
-                            <option value="Hot Drinks">Hot Drinks</option>
-                            <option value="Cold Drinks">Cold Drinks</option>
-                            <option value="Bakery & Desserts">Bakery & Desserts</option>
-                        </select>
-                        <input type="number" id="newItemPrice" placeholder="Price (EGP)" class="px-3 py-2 border border-stone-300 rounded-xl text-sm">
-                        <input type="url" id="newItemImage" placeholder="Image URL (Optional)" class="px-3 py-2 border border-stone-300 rounded-xl text-sm">
-                        <button onclick="addNewItem()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-xl text-sm transition shadow-xs">
-                            <i class="fa-solid fa-plus mr-1"></i> Add Item
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Products Table -->
-                <div class="bg-white p-5 rounded-2xl shadow-xs border border-stone-200">
-                    <h4 class="font-bold text-stone-800 mb-3 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-list text-amber-600"></i> Manage Prices & Availability
-                    </h4>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-stone-50 border-b text-stone-600">
-                                <tr>
-                                    <th class="p-3">Item</th>
-                                    <th class="p-3">Category</th>
-                                    <th class="p-3">Price (EGP)</th>
-                                    <th class="p-3">Status</th>
-                                    <th class="p-3 text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminProductsTable" class="divide-y divide-stone-100">
-                                <!-- Dynamic product rows -->
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Products Table -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
+                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-list text-amber-600 mr-1"></i> Manage Prices & Items</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-stone-50 border-b text-stone-600">
+                            <tr>
+                                <th class="p-3">Item Name</th>
+                                <th class="p-3">Category</th>
+                                <th class="p-3">Price (EGP)</th>
+                                <th class="p-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminProductsTable" class="divide-y divide-stone-100">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-            <!-- Tab 3: Cafe Settings -->
-            <div id="admin-tab-settings" class="hidden max-w-xl mx-auto">
-                <div class="bg-white p-6 rounded-2xl shadow-xs border border-stone-200 space-y-4">
-                    <h4 class="font-bold text-stone-800 text-base border-b pb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-store text-amber-600"></i> Customize Cafe Profile
-                    </h4>
-                    <div>
-                        <label class="block text-xs font-bold text-stone-600 mb-1">Cafe Brand Name</label>
-                        <input type="text" id="settingCafeName" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-stone-600 mb-1">Tagline / Subtitle</label>
-                        <input type="text" id="settingCafeSubtitle" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-stone-600 mb-1">WhatsApp Order Number (Country code without +)</label>
-                        <input type="text" id="settingWhatsapp" placeholder="201000000000" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-xl text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-stone-600 mb-1">Admin Dashboard PIN</label>
-                        <div class="relative">
-                            <input type="password" id="settingAdminPin" maxlength="12" placeholder="Enter new secret PIN" class="w-full pr-10 pl-3.5 py-2.5 border border-stone-300 rounded-xl text-sm tracking-widest font-bold">
-                            <button type="button" onclick="togglePinVisibility()" class="absolute right-3 top-2.5 text-stone-400 hover:text-stone-700">
-                                <i id="pinEyeIcon" class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button onclick="saveCafeSettings()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-xl font-bold text-sm transition shadow-md">
-                        <i class="fa-solid fa-floppy-disk mr-1"></i> Save Settings
-                    </button>
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <!-- Application Logic -->
+    <!-- Script Application -->
     <script>
-        // Default Okka Cafe Settings
-        const defaultSettings = {
-            cafeName: "Okka",
-            cafeSubtitle: "Specialty Coffee & Fresh Bakery",
-            whatsappNumber: "201000000000",
-            adminPin: "8899" // Changed default PIN & removed hint from UI
-        };
-
-        // Default Menu Items in English
         const defaultProducts = [
-            { id: 1, name: "Single Espresso", category: "Hot Drinks", price: 45, available: true, image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=500&q=80" },
-            { id: 2, name: "Hot Spanish Latte", category: "Hot Drinks", price: 75, available: true, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=500&q=80" },
-            { id: 3, name: "Classic Cappuccino", category: "Hot Drinks", price: 60, available: true, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&q=80" },
-            { id: 4, name: "Turkish Coffee", category: "Hot Drinks", price: 35, available: true, image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&q=80" },
-            { id: 5, name: "Iced Spanish Latte", category: "Cold Drinks", price: 80, available: true, image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=500&q=80" },
-            { id: 6, name: "Passion Fruit Mojito", category: "Cold Drinks", price: 65, available: true, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=80" },
-            { id: 7, name: "Caramel Frappuccino", category: "Cold Drinks", price: 85, available: true, image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80" },
-            { id: 8, name: "Chocolate Cheesecake", category: "Bakery & Desserts", price: 90, available: true, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80" },
-            { id: 9, name: "Fresh Butter Croissant", category: "Bakery & Desserts", price: 50, available: true, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80" }
+            { id: 1, name: "Espresso", category: "Hot Drinks", price: 45, image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400" },
+            { id: 2, name: "Hot Spanish Latte", category: "Hot Drinks", price: 75, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400" },
+            { id: 3, name: "Cappuccino", category: "Hot Drinks", price: 60, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400" },
+            { id: 4, name: "Iced Spanish Latte", category: "Cold Drinks", price: 80, image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400" },
+            { id: 5, name: "Passion Fruit Mojito", category: "Cold Drinks", price: 65, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400" },
+            { id: 6, name: "Chocolate Cheesecake", category: "Desserts", price: 90, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400" },
+            { id: 7, name: "Chocolate Croissant", category: "Desserts", price: 50, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400" }
         ];
 
-        // Load state from LocalStorage (using English-specific keys so old Arabic cache won't override)
-        let settings = JSON.parse(localStorage.getItem('okka_en_settings')) || defaultSettings;
-        let products = JSON.parse(localStorage.getItem('okka_en_products')) || defaultProducts;
-        let orders = JSON.parse(localStorage.getItem('okka_en_orders')) || [];
+        let products = JSON.parse(localStorage.getItem('okka_products')) || defaultProducts;
         let cart = [];
         let currentFilter = 'all';
+        let cafeWhatsApp = localStorage.getItem('okka_whatsapp') || "201000000000"; // الرقم الافتراضي
 
-        // Toast Notification System
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            
-            const bgColors = {
-                success: 'bg-emerald-800 text-white border-emerald-600',
-                error: 'bg-red-700 text-white border-red-500',
-                info: 'bg-okka-900 text-amber-300 border-amber-500/40'
-            };
-            const icons = {
-                success: 'fa-circle-check',
-                error: 'fa-circle-exclamation',
-                info: 'fa-mug-hot'
-            };
-
-            toast.className = `toast-enter pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border text-sm font-semibold ${bgColors[type] || bgColors.info}`;
-            toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-base"></i><span>${message}</span>`;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(10px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // Apply Brand Settings across UI
-        function applyBrandSettings() {
-            document.title = `${settings.cafeName} | Digital Cafe Menu`;
-            document.getElementById('headerCafeName').innerText = settings.cafeName;
-            document.getElementById('headerCafeSubtitle').innerText = settings.cafeSubtitle;
-            document.getElementById('bannerBrandName').innerText = settings.cafeName;
-            document.getElementById('footerCafeName').innerText = settings.cafeName;
-            document.getElementById('qrCafeTitle').innerText = settings.cafeName;
-            document.getElementById('adminHeaderBrand').innerText = settings.cafeName;
-            updatePendingOrdersBadge();
-        }
-
-        // Update Admin Pending Orders Badge
-        function updatePendingOrdersBadge() {
-            const pendingCount = orders.filter(o => o.status === 'pending').length;
-            const badge = document.getElementById('pendingOrdersBadge');
-            const tabBadge = document.getElementById('tabOrdersCount');
-            
-            if (tabBadge) tabBadge.innerText = orders.length;
-            if (pendingCount > 0) {
-                badge.innerText = pendingCount;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        // Render Menu Grid
         function renderMenu() {
             const grid = document.getElementById('menuGrid');
-            const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
             grid.innerHTML = '';
-
-            let filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
-            if (searchQuery) {
-                filtered = filtered.filter(p => p.name.toLowerCase().includes(searchQuery) || p.category.toLowerCase().includes(searchQuery));
-            }
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-stone-200">
-                        <i class="fa-solid fa-mug-saucer text-4xl text-stone-300 mb-3"></i>
-                        <p class="text-stone-500 font-semibold">No items match your current search or filter.</p>
-                    </div>
-                `;
-                return;
-            }
+            const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
 
             filtered.forEach(product => {
-                const isAvailable = product.available !== false;
                 grid.innerHTML += `
-                    <div class="bg-white rounded-2xl shadow-xs border border-stone-200 overflow-hidden flex flex-col justify-between hover:shadow-lg transition duration-300 group ${!isAvailable ? 'opacity-70' : ''}">
-                        <div class="h-48 overflow-hidden relative bg-stone-100">
-                            <img src="${product.image}" onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&q=80'" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 left-3 bg-okka-900/85 backdrop-blur-md text-amber-300 text-xs px-3 py-1 rounded-full font-semibold shadow-xs">${product.category}</span>
-                            ${!isAvailable ? '<div class="absolute inset-0 bg-black/50 flex items-center justify-center"><span class="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Sold Out</span></div>' : ''}
+                    <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-okka-900/80 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-bold">${product.category}</span>
                         </div>
                         <div class="p-4 flex flex-col flex-grow justify-between">
-                            <div class="flex justify-between items-start gap-2 mb-4">
-                                <h3 class="font-bold text-stone-800 text-base sm:text-lg leading-snug">${product.name}</h3>
-                                <span class="bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 rounded-lg font-extrabold text-sm whitespace-nowrap">${product.price} EGP</span>
+                            <div>
+                                <h3 class="font-bold text-stone-800 text-lg mb-1">${product.name}</h3>
+                                <p class="text-amber-700 font-bold text-base mb-4">${product.price} EGP</p>
                             </div>
-                            <button onclick="addToCart(${product.id})" ${!isAvailable ? 'disabled' : ''} class="w-full ${isAvailable ? 'bg-okka-800 hover:bg-okka-900 text-white cursor-pointer active:scale-98' : 'bg-stone-300 text-stone-500 cursor-not-allowed'} py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 shadow-xs">
-                                <i class="fa-solid ${isAvailable ? 'fa-cart-plus' : 'fa-ban'} text-xs"></i>
-                                <span>${isAvailable ? 'Add to Cart' : 'Unavailable'}</span>
+                            <button onclick="addToCart(${product.id})" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus text-xs"></i> Add to Cart
                             </button>
                         </div>
                     </div>
@@ -543,18 +278,13 @@
                 btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-200');
             });
             const activeBtn = document.getElementById(`cat-${cat}`);
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-                activeBtn.classList.add('bg-okka-800', 'text-white', 'shadow-sm');
-            }
+            activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
+            activeBtn.classList.add('bg-okka-800', 'text-white', 'shadow-sm');
             renderMenu();
         }
 
-        // Cart Management
         function addToCart(id) {
             const product = products.find(p => p.id === id);
-            if (!product || product.available === false) return;
-            
             const existing = cart.find(item => item.id === id);
             if (existing) {
                 existing.qty++;
@@ -563,7 +293,6 @@
             }
             updateCartCount();
             renderCartItems();
-            showToast(`Added "${product.name}" to cart`, 'info');
         }
 
         function updateCartCount() {
@@ -577,45 +306,35 @@
             renderCartItems();
         }
 
-        function getCartTotal() {
-            return cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        }
-
         function renderCartItems() {
             const container = document.getElementById('cartItemsContainer');
             container.innerHTML = '';
 
             if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-16 space-y-2">
-                        <i class="fa-solid fa-basket-shopping text-4xl text-stone-300"></i>
-                        <p class="text-stone-400 text-sm font-semibold">Your cart is currently empty</p>
-                    </div>
-                `;
+                container.innerHTML = `<p class="text-center text-stone-400 py-8 text-sm font-bold">Your cart is empty.</p>`;
                 document.getElementById('cartTotal').innerText = '0 EGP';
                 return;
             }
 
+            let total = 0;
             cart.forEach((item, index) => {
+                total += item.price * item.qty;
                 container.innerHTML += `
-                    <div class="py-3 flex justify-between items-center text-sm gap-2">
-                        <div class="flex items-center gap-3">
-                            <img src="${item.image}" onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200'" class="w-12 h-12 rounded-xl object-cover border border-stone-200">
-                            <div>
-                                <p class="font-bold text-stone-800">${item.name}</p>
-                                <p class="text-xs text-amber-700 font-semibold">${item.price} EGP × ${item.qty} = ${item.price * item.qty} EGP</p>
-                            </div>
+                    <div class="py-3 flex justify-between items-center text-sm">
+                        <div>
+                            <p class="font-bold text-stone-800">${item.name}</p>
+                            <p class="text-xs text-amber-700 font-bold">${item.price} EGP</p>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-700 hover:bg-stone-200 transition">-</button>
-                            <span class="font-extrabold text-stone-800 w-6 text-center">${item.qty}</span>
-                            <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-700 hover:bg-stone-200 transition">+</button>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-600 hover:bg-stone-200">-</button>
+                            <span class="font-bold text-stone-800 w-5 text-center">${item.qty}</span>
+                            <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-600 hover:bg-stone-200">+</button>
                         </div>
                     </div>
                 `;
             });
 
-            document.getElementById('cartTotal').innerText = `${getCartTotal()} EGP`;
+            document.getElementById('cartTotal').innerText = `${total} EGP`;
         }
 
         function changeQty(index, delta) {
@@ -627,19 +346,12 @@
             renderCartItems();
         }
 
-        function toggleTableField() {
-            const type = document.getElementById('orderType').value;
-            const label = document.querySelector('#tableFieldContainer label');
-            label.innerText = type === 'Dine-In' ? 'Table Number / Special Notes' : 'Order Notes (Optional)';
-        }
-
         function openCheckoutModal() {
             if (cart.length === 0) {
-                showToast('Your cart is empty! Add some items first.', 'error');
+                alert('Your cart is empty!');
                 return;
             }
             toggleCart();
-            document.getElementById('checkoutTotalDisplay').innerText = `${getCartTotal()} EGP`;
             document.getElementById('checkoutModal').classList.remove('hidden');
         }
 
@@ -647,123 +359,41 @@
             document.getElementById('checkoutModal').classList.add('hidden');
         }
 
-        function submitOrder(method) {
-            const name = document.getElementById('customerName').value.trim();
+        function submitOrderWhatsApp() {
+            const name = document.getElementById('customerName').value;
             const orderType = document.getElementById('orderType').value;
-            const tableNo = document.getElementById('tableNo').value.trim();
+            const tableNo = document.getElementById('tableNo').value;
 
             if (!name) {
-                showToast('Please enter your name to complete the order.', 'error');
+                alert('Please enter your name.');
                 return;
             }
 
-            const total = getCartTotal();
-            const orderData = {
-                id: Math.floor(1000 + Math.random() * 9000),
-                customerName: name,
-                orderType: orderType,
-                tableNo: tableNo || 'Not specified',
-                items: [...cart],
-                total: total,
-                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-                status: 'pending'
-            };
+            let orderText = `*New Order - Okka Cafe* %0a`;
+            orderText += `👤 *Customer:* ${name} %0a`;
+            orderText += `📌 *Type:* ${orderType} %0a`;
+            if(tableNo) orderText += `📍 *Table/Notes:* ${tableNo} %0a%0a`;
+            orderText += `🛍️ *Items:* %0a`;
 
-            // Save order to Admin Dashboard
-            orders.unshift(orderData);
-            localStorage.setItem('okka_en_orders', JSON.stringify(orders));
-            updatePendingOrdersBadge();
+            let total = 0;
+            cart.forEach(item => {
+                orderText += `- ${item.name} (${item.qty}x) = ${item.price * item.qty} EGP %0a`;
+                total += item.price * item.qty;
+            });
 
-            if (method === 'whatsapp') {
-                let itemsText = orderData.items.map(i => `• ${i.name} (${i.qty} × ${i.price} EGP)`).join('\n');
-                let msg = `*New Order - ${settings.cafeName}*\n` +
-                          `Order ID: #${orderData.id}\n` +
-                          `Customer: ${name}\n` +
-                          `Type: ${orderType}\n` +
-                          `Table/Notes: ${orderData.tableNo}\n` +
-                          `------------------\n` +
-                          `${itemsText}\n` +
-                          `------------------\n` +
-                          `*Total: ${total} EGP*`;
-                
-                const waUrl = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(msg)}`;
-                window.open(waUrl, '_blank');
-            }
+            orderText += `%0a💰 *Total Amount:* *${total} EGP*`;
 
-            showToast(`Order #${orderData.id} placed successfully! Preparing now.`, 'success');
+            const url = `https://wa.me/${cafeWhatsApp}?text=${orderText}`;
+            window.open(url, '_blank');
+
             cart = [];
             updateCartCount();
             closeCheckoutModal();
         }
 
-        // QR Code & Direct Link Modal
-        let qrInstance = null;
-        function openQRModal() {
-            document.getElementById('qrModal').classList.remove('hidden');
-            const url = window.location.href;
-            document.getElementById('shareUrl').value = url;
-            
-            const qrContainer = document.getElementById("qrcode");
-            qrContainer.innerHTML = ''; // Clear and regenerate fresh QR
-            qrInstance = new QRCode(qrContainer, {
-                text: url,
-                width: 190,
-                height: 190,
-                colorDark: "#3d1d07",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        }
-
-        function closeQRModal() {
-            document.getElementById('qrModal').classList.add('hidden');
-        }
-
-        function copyLink() {
-            const copyText = document.getElementById('shareUrl');
-            copyText.focus();
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast('Menu link copied to clipboard!', 'success');
-                } else {
-                    showToast('Please press Ctrl+C / Cmd+C to copy the selected link.', 'info');
-                }
-            } catch (err) {
-                showToast('Please press Ctrl+C / Cmd+C to copy the selected link.', 'info');
-            }
-        }
-
-        function downloadQRCode() {
-            const qrCanvas = document.querySelector('#qrcode canvas');
-            const qrImg = document.querySelector('#qrcode img');
-            
-            let imageUrl = '';
-            if (qrCanvas) {
-                imageUrl = qrCanvas.toDataURL("image/png");
-            } else if (qrImg && qrImg.src) {
-                imageUrl = qrImg.src;
-            }
-
-            if (imageUrl) {
-                const link = document.createElement('a');
-                link.href = imageUrl;
-                link.download = `${settings.cafeName}-Menu-QR.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast('QR Code PNG downloaded!', 'success');
-            } else {
-                showToast('Unable to download image, please try again.', 'error');
-            }
-        }
-
-        // Admin Authentication & Dashboard
+        // Admin Security & Dashboard
         function openAdminLogin() {
             document.getElementById('adminLoginModal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('adminPin').focus(), 100);
         }
 
         function closeAdminLogin() {
@@ -772,19 +402,18 @@
 
         function verifyAdmin() {
             const pin = document.getElementById('adminPin').value;
-            if (pin === settings.adminPin) {
+            if (pin === '8899') {
                 closeAdminLogin();
                 document.getElementById('adminPin').value = '';
                 openAdminDashboard();
             } else {
-                showToast('Incorrect Admin PIN!', 'error');
+                alert('Incorrect PIN code!');
             }
         }
 
         function openAdminDashboard() {
             document.getElementById('adminDashboardModal').classList.remove('hidden');
-            loadSettingsForm();
-            renderOrdersList();
+            document.getElementById('whatsappNumberInput').value = cafeWhatsApp;
             renderAdminProducts();
         }
 
@@ -793,148 +422,64 @@
             renderMenu();
         }
 
-        function switchAdminTab(tabName) {
-            ['orders', 'menu', 'settings'].forEach(t => {
-                document.getElementById(`admin-tab-${t}`).classList.add('hidden');
-                const btn = document.getElementById(`tab-btn-${t}`);
-                btn.classList.remove('border-amber-600', 'text-amber-700');
-                btn.classList.add('border-transparent', 'text-stone-500');
-            });
-
-            document.getElementById(`admin-tab-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
-            activeBtn.classList.remove('border-transparent', 'text-stone-500');
-            activeBtn.classList.add('border-amber-600', 'text-amber-700');
-        }
-
-        // Incoming Orders Management
-        function renderOrdersList() {
-            const container = document.getElementById('ordersListContainer');
-            updatePendingOrdersBadge();
-
-            if (orders.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full bg-white p-10 rounded-2xl border border-stone-200 text-center">
-                        <i class="fa-solid fa-clipboard-check text-4xl text-stone-300 mb-2"></i>
-                        <p class="text-stone-500 font-semibold text-sm">No incoming orders yet.</p>
-                    </div>
-                `;
+        function saveWhatsAppNumber() {
+            const num = document.getElementById('whatsappNumberInput').value.trim();
+            if(!num) {
+                alert('Please enter a valid WhatsApp number.');
                 return;
             }
-
-            container.innerHTML = orders.map((order, idx) => {
-                const isDone = order.status === 'completed';
-                const itemsHtml = order.items.map(i => `<li class="flex justify-between text-xs py-1 border-b border-stone-100 last:border-0"><span>${i.name} × <b>${i.qty}</b></span><span>${i.price * i.qty} EGP</span></li>`).join('');
-                
-                return `
-                    <div class="bg-white rounded-2xl p-4 shadow-xs border ${isDone ? 'border-stone-200 opacity-75' : 'border-amber-400 ring-1 ring-amber-400/30'} flex flex-col justify-between gap-3">
-                        <div>
-                            <div class="flex justify-between items-center border-b pb-2 mb-2">
-                                <span class="font-extrabold text-okka-900 text-sm">Order #${order.id} — ${order.customerName}</span>
-                                <span class="text-xs text-stone-400 font-semibold"><i class="fa-regular fa-clock mr-1"></i>${order.time}</span>
-                            </div>
-                            <div class="flex flex-wrap gap-2 mb-3">
-                                <span class="bg-stone-100 text-stone-700 text-xs px-2.5 py-1 rounded-lg font-bold">${order.orderType}</span>
-                                <span class="bg-amber-50 text-amber-800 text-xs px-2.5 py-1 rounded-lg font-bold">${order.tableNo}</span>
-                            </div>
-                            <ul class="bg-stone-50 rounded-xl p-2.5 space-y-1 mb-3">
-                                ${itemsHtml}
-                            </ul>
-                        </div>
-                        <div class="flex justify-between items-center pt-2 border-t">
-                            <span class="font-extrabold text-amber-700 text-base">Total: ${order.total} EGP</span>
-                            <button onclick="toggleOrderStatus(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-600 hover:bg-amber-700 text-white'}">
-                                ${isDone ? '<i class="fa-solid fa-check-double mr-1"></i> Delivered' : '<i class="fa-solid fa-fire-burner mr-1"></i> Preparing (Complete)'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            cafeWhatsApp = num;
+            localStorage.setItem('okka_whatsapp', num);
+            alert('WhatsApp number saved successfully!');
         }
 
-        function toggleOrderStatus(index) {
-            orders[index].status = orders[index].status === 'pending' ? 'completed' : 'pending';
-            localStorage.setItem('okka_en_orders', JSON.stringify(orders));
-            renderOrdersList();
-            showToast('Order status updated', 'info');
-        }
-
-        function clearCompletedOrders() {
-            orders = orders.filter(o => o.status !== 'completed');
-            localStorage.setItem('okka_en_orders', JSON.stringify(orders));
-            renderOrdersList();
-            showToast('Completed orders cleared', 'success');
-        }
-
-        // Menu Management
         function renderAdminProducts() {
             const tbody = document.getElementById('adminProductsTable');
             tbody.innerHTML = '';
 
             products.forEach((product) => {
-                const isAvailable = product.available !== false;
                 tbody.innerHTML += `
                     <tr class="hover:bg-stone-50">
-                        <td class="p-3 font-bold text-stone-800 flex items-center gap-2.5">
-                            <img src="${product.image}" onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=100'" class="w-9 h-9 rounded-lg object-cover">
-                            <span>${product.name}</span>
-                        </td>
-                        <td class="p-3 text-stone-500 font-semibold text-xs">${product.category}</td>
+                        <td class="p-3 font-bold text-stone-800">${product.name}</td>
+                        <td class="p-3 text-stone-500 font-bold">${product.category}</td>
                         <td class="p-3">
-                            <input type="number" value="${product.price}" id="price-${product.id}" class="w-20 px-2 py-1 border border-stone-300 rounded-lg text-sm font-bold text-center"> EGP
+                            <input type="number" value="${product.price}" id="price-${product.id}" class="w-24 px-2 py-1 border rounded-lg text-sm font-bold"> EGP
                         </td>
-                        <td class="p-3">
-                            <button onclick="toggleAvailability(${product.id})" class="px-2.5 py-1 rounded-lg text-xs font-bold ${isAvailable ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-700'}">
-                                ${isAvailable ? 'Available' : 'Sold Out'}
-                            </button>
-                        </td>
-                        <td class="p-3 text-center space-x-1 whitespace-nowrap">
-                            <button onclick="updatePrice(${product.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition">Save</button>
-                            <button onclick="deleteProduct(${product.id})" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-trash"></i></button>
+                        <td class="p-3 text-center space-x-2">
+                            <button onclick="updatePrice(${product.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg text-xs font-bold">Save</button>
+                            <button onclick="deleteProduct(${product.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold">Delete</button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        function toggleAvailability(id) {
-            const product = products.find(p => p.id === id);
-            if (product) {
-                product.available = product.available === false ? true : false;
-                localStorage.setItem('okka_en_products', JSON.stringify(products));
-                renderAdminProducts();
-                showToast(`Updated availability for "${product.name}"`, 'info');
-            }
-        }
-
         function updatePrice(id) {
             const newPrice = parseFloat(document.getElementById(`price-${id}`).value);
             const product = products.find(p => p.id === id);
-            if (product && !isNaN(newPrice) && newPrice >= 0) {
+            if (product && !isNaN(newPrice)) {
                 product.price = newPrice;
-                localStorage.setItem('okka_en_products', JSON.stringify(products));
-                showToast('Price updated successfully!', 'success');
+                localStorage.setItem('okka_products', JSON.stringify(products));
+                alert('Price updated successfully!');
                 renderAdminProducts();
-            } else {
-                showToast('Please enter a valid price.', 'error');
             }
         }
 
         function deleteProduct(id) {
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('okka_en_products', JSON.stringify(products));
-            renderAdminProducts();
-            showToast('Item deleted from menu.', 'info');
+            if (confirm('Are you sure you want to delete this item?')) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('okka_products', JSON.stringify(products));
+                renderAdminProducts();
+            }
         }
 
         function addNewItem() {
-            const name = document.getElementById('newItemName').value.trim();
+            const name = document.getElementById('newItemName').value;
             const category = document.getElementById('newItemCategory').value;
             const price = parseFloat(document.getElementById('newItemPrice').value);
-            const imageUrl = document.getElementById('newItemImage').value.trim();
 
-            if (!name || isNaN(price) || price <= 0) {
-                showToast('Please enter a valid item name and price.', 'error');
+            if (!name || isNaN(price)) {
+                alert('Please enter a valid item name and price.');
                 return;
             }
 
@@ -943,68 +488,18 @@
                 name: name,
                 category: category,
                 price: price,
-                available: true,
-                image: imageUrl || "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500&q=80"
+                image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400"
             };
 
             products.push(newItem);
-            localStorage.setItem('okka_en_products', JSON.stringify(products));
+            localStorage.setItem('okka_products', JSON.stringify(products));
             
             document.getElementById('newItemName').value = '';
             document.getElementById('newItemPrice').value = '';
-            document.getElementById('newItemImage').value = '';
             renderAdminProducts();
-            showToast('New item added to menu!', 'success');
+            alert('Item added successfully!');
         }
 
-        // Cafe Settings
-        function togglePinVisibility() {
-            const input = document.getElementById('settingAdminPin');
-            const icon = document.getElementById('pinEyeIcon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
-
-        function loadSettingsForm() {
-            document.getElementById('settingCafeName').value = settings.cafeName;
-            document.getElementById('settingCafeSubtitle').value = settings.cafeSubtitle;
-            document.getElementById('settingWhatsapp').value = settings.whatsappNumber;
-            const pinInput = document.getElementById('settingAdminPin');
-            pinInput.type = 'password';
-            pinInput.value = settings.adminPin;
-            document.getElementById('pinEyeIcon').className = 'fa-solid fa-eye';
-        }
-
-        function saveCafeSettings() {
-            const name = document.getElementById('settingCafeName').value.trim();
-            const subtitle = document.getElementById('settingCafeSubtitle').value.trim();
-            const wa = document.getElementById('settingWhatsapp').value.trim();
-            const pin = document.getElementById('settingAdminPin').value.trim();
-
-            if (!name || !pin) {
-                showToast('Cafe Name and Admin PIN are required.', 'error');
-                return;
-            }
-
-            settings = {
-                cafeName: name,
-                cafeSubtitle: subtitle || 'Specialty Coffee & Fresh Bakery',
-                whatsappNumber: wa || '201000000000',
-                adminPin: pin
-            };
-
-            localStorage.setItem('okka_en_settings', JSON.stringify(settings));
-            applyBrandSettings();
-            showToast('Cafe settings saved!', 'success');
-        }
-
-        // Initialize Application
-        applyBrandSettings();
         renderMenu();
     </script>
 </body>

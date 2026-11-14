@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OKKA COFFEE | Menu</title>
+    <title>OKKA Coffee | Menu</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -13,7 +13,7 @@
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200');
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200');
             background-size: cover;
             background-position: center;
         }
@@ -43,26 +43,25 @@
     <header class="bg-okka-900 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="bg-amber-600 p-2 rounded-xl text-white font-bold text-xl shadow-inner">
+                <div class="bg-amber-600 p-2.5 rounded-xl text-white font-bold text-xl shadow-inner flex items-center justify-center">
                     <i class="fa-solid fa-mug-hot"></i>
                 </div>
-                <div>
-                    <h1 class="text-xl font-black tracking-wider text-amber-500">OKKA <span class="text-white text-sm font-normal">Coffee</span></h1>
-                    <p class="text-xs text-stone-300 lang-text" data-ar="مختصات القهوة والمخبوزات الطازجة" data-en="Specialty Coffee & Fresh Bakery">مختصات القهوة والمخبوزات الطازجة</p>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="text-xl font-black tracking-wider text-amber-500">OKKA</span>
+                        <span class="text-white text-sm font-semibold tracking-wide">Coffee</span>
+                    </div>
+                    <span class="text-xs text-stone-300 font-medium lang-text" data-ar="مختصات القهوة والمخابوزات الطازجة" data-en="Specialty Coffee & Fresh Bakery">مختصات القهوة والمخابوزات الطازجة</span>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3 space-x-reverse">
+            <div class="flex items-center space-x-2.5 space-x-reverse">
                 <!-- Language Switcher Button -->
                 <button onclick="toggleLanguage()" class="bg-stone-800 hover:bg-stone-700 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-lg font-bold text-xs transition">
                     <span id="langBtnText">EN</span>
                 </button>
-                <!-- Admin Lock -->
-                <button onclick="openAdminLogin()" class="text-stone-400 hover:text-amber-400 p-2 text-xs transition" title="Admin">
-                    <i class="fa-solid fa-lock"></i>
-                </button>
                 <!-- Cart Button -->
-                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-okka-900 px-3 py-1.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-1.5">
+                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-okka-900 px-3 py-1.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-1.5 shadow-sm">
                     <i class="fa-solid fa-cart-shopping"></i> <span class="lang-text" data-ar="السلة" data-en="Cart">السلة</span>
                     <span id="cartCount" class="bg-okka-900 text-white text-xs px-1.5 py-0.5 rounded-full">0</span>
                 </button>
@@ -73,36 +72,33 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-6xl mx-auto px-4 py-6 w-full">
         
-        <!-- Welcome Banner with Background and Map Button -->
+        <!-- Welcome Banner -->
         <div class="hero-bg text-white rounded-2xl p-6 md:p-10 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 border border-amber-500/20">
-            <div class="text-center md:text-right">
-                <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30 lang-text" data-ar="أهلاً بكم في أوكا" data-en="Welcome to Okka">أهلاً بكم في أوكا</span>
-                <h2 class="text-2xl md:text-4xl font-black mt-2 mb-2 lang-text" data-ar="تجربة قهوة استثنائية" data-en="Authentic Coffee Experience">تجربة قهوة استثنائية</h2>
-                <p class="text-stone-200 text-sm md:text-base max-w-md lang-text" data-ar="استمتع بأفضل المشروبات والمخبوزات الطازجة. اطلب مباشرة من طاولتك بكل سهولة." data-en="Enjoy our finest beverages and pastries. Order directly from your table easily.">استمتع بأفضل المشروبات والمخبوزات الطازجة. اطلب مباشرة من طاولتك بكل سهولة.</p>
+            <div class="text-center md:text-right space-y-2">
+                <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30 lang-text" data-ar="مرحباً بك في وجهتك المفضلة" data-en="Welcome to Your Favorite Spot">مرحباً بك في وجهتك المفضلة</span>
+                <h2 class="text-2xl md:text-4xl font-black lang-text" data-ar="استمتع بأجمل الأوقات وألذ المشروبات" data-en="Enjoy Great Moments & Fine Drinks">استمتع بأجمل الأوقات وألذ المشروبات</h2>
+                <p class="text-stone-200 text-sm md:text-base max-w-md lang-text" data-ar="نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً." data-en="We serve you the finest handcrafted beverages and freshly baked goods daily.">نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً.</p>
                 
                 <!-- Google Maps Link Button -->
-                <div class="mt-4">
+                <div class="pt-2">
                     <a href="https://maps.app.goo.gl/kcGYo6aU495ce7Dr8" target="_blank" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">
-                        <i class="fa-solid fa-location-dot"></i> <span class="lang-text" data-ar="موقعنا على الخريطة" data-en="Our Location on Map">موقعنا على الخريطة</span>
+                        <i class="fa-solid fa-location-dot"></i> <span class="lang-text" data-ar="زورنا في الكافيه (خرائط جوجل)" data-en="Visit Us (Google Maps)">زورنا في الكافيه (خرائط جوجل)</span>
                     </a>
                 </div>
             </div>
             
-            <div class="bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-white/10 text-center">
+            <div class="bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-white/10 text-center shrink-0">
                 <p class="text-xs text-amber-300 font-bold mb-1 lang-text" data-ar="حالة الفرع" data-en="Branch Status">حالة الفرع</p>
                 <div class="flex items-center gap-2 justify-center">
                     <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
-                    <span class="text-sm font-bold lang-text" data-ar="مفتوح للطلبات" data-en="Open for Orders">مفتوح للطلبات</span>
+                    <span class="text-sm font-bold lang-text" data-ar="مفتوح الآن" data-en="Open Now">مفتوح الآن</span>
                 </div>
             </div>
         </div>
 
-        <!-- Categories Filter -->
-        <div class="flex overflow-x-auto pb-3 mb-6 gap-2 no-scrollbar">
-            <button onclick="filterCategory('all')" id="cat-all" class="category-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-okka-800 text-white shadow-sm transition lang-text" data-ar="الكل" data-en="All Items">الكل</button>
-            <button onclick="filterCategory('Hot Drinks')" id="cat-Hot Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition lang-text" data-ar="مشروبات ساخنة" data-en="Hot Drinks">مشروبات ساخنة</button>
-            <button onclick="filterCategory('Cold Drinks')" id="cat-Cold Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition lang-text" data-ar="مشروبات باردة" data-en="Cold Drinks">مشروبات باردة</button>
-            <button onclick="filterCategory('Desserts')" id="cat-Desserts" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition lang-text" data-ar="حلويات ومخبوزات" data-en="Desserts & Bakery">حلويات ومخبوزات</button>
+        <!-- Categories Filter Container -->
+        <div id="categoriesContainer" class="flex overflow-x-auto pb-3 mb-6 gap-2 no-scrollbar">
+            <!-- Dynamic Category Buttons -->
         </div>
 
         <!-- Menu Grid -->
@@ -171,94 +167,23 @@
         </div>
     </div>
 
-    <!-- Admin Login Modal -->
-    <div id="adminLoginModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-stone-800">تسجيل دخول الأدمن</h3>
-                <button onclick="closeAdminLogin()" class="text-stone-400 hover:text-stone-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1">الرمز السري (PIN)</label>
-                <input type="password" id="adminPin" placeholder="أدخل الرمز السري" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-center">
-            </div>
-            <button onclick="verifyAdmin()" class="w-full bg-okka-900 hover:bg-black text-white py-2.5 rounded-xl font-bold transition text-sm">
-                دخول
-            </button>
-        </div>
-    </div>
-
-    <!-- Admin Dashboard Modal -->
-    <div id="adminDashboardModal" class="fixed inset-0 bg-stone-900 z-50 hidden flex flex-col text-stone-800">
-        <div class="bg-okka-900 text-white p-4 flex justify-between items-center shadow-md">
-            <h3 class="font-bold text-lg"><i class="fa-solid fa-gauge-high ml-2"></i> لوحة تحكم أوكا</h3>
-            <button onclick="closeAdminDashboard()" class="text-stone-300 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="flex-grow overflow-y-auto p-4 md:p-6 max-w-5xl mx-auto w-full space-y-6">
-            
-            <!-- WhatsApp Settings Box -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
-                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-brands fa-whatsapp text-green-600 ml-1"></i> رقم واتساب لاستقبال الطلبات</h4>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="whatsappNumberInput" placeholder="مثال: 201012345678" class="flex-grow px-3 py-2 border rounded-xl text-sm text-right">
-                    <button onclick="saveWhatsAppNumber()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-5 py-2 rounded-xl text-sm transition">حفظ الرقم</button>
-                </div>
-            </div>
-
-            <!-- Add New Item -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
-                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-plus-circle text-amber-600 ml-1"></i> إضافة صنف جديد</h4>
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                    <input type="text" id="newItemName" placeholder="اسم الصنف" class="px-3 py-2 border rounded-xl text-sm text-right">
-                    <select id="newItemCategory" class="px-3 py-2 border rounded-xl text-sm">
-                        <option value="Hot Drinks">مشروبات ساخنة</option>
-                        <option value="Cold Drinks">مشروبات باردة</option>
-                        <option value="Desserts">حلويات ومخبوزات</option>
-                    </select>
-                    <input type="number" id="newItemPrice" placeholder="السعر (ج.م)" class="px-3 py-2 border rounded-xl text-sm text-right">
-                    <button onclick="addNewItem()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-xl text-sm transition">إضافة الصنف</button>
-                </div>
-            </div>
-
-            <!-- Products Table -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
-                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-list text-amber-600 ml-1"></i> إدارة الأسعار والأصناف</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right text-sm">
-                        <thead class="bg-stone-50 border-b text-stone-600">
-                            <tr>
-                                <th class="p-3">اسم الصنف</th>
-                                <th class="p-3">القسم</th>
-                                <th class="p-3">السعر (ج.م)</th>
-                                <th class="p-3 text-center">الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminProductsTable" class="divide-y divide-stone-100">
-                            <!-- Rows -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Script Application -->
     <script>
         const defaultProducts = [
-            { id: 1, name: "Espresso", nameAr: "إسبريسو", category: "Hot Drinks", price: 45, image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400" },
-            { id: 2, name: "Hot Spanish Latte", nameAr: "هوت سبانش لاتيه", category: "Hot Drinks", price: 75, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400" },
-            { id: 3, name: "Cappuccino", nameAr: "كابتشينو", category: "Hot Drinks", price: 60, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400" },
-            { id: 4, name: "Iced Spanish Latte", nameAr: "ايس سبانش لاتيه", category: "Cold Drinks", price: 80, image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400" },
-            { id: 5, name: "Passion Fruit Mojito", nameAr: "موهيتو باشن فروت", category: "Cold Drinks", price: 65, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400" },
-            { id: 6, name: "Chocolate Cheesecake", nameAr: "تشيز كيك الشوكولاتة", category: "Desserts", price: 90, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400" },
-            { id: 7, name: "Chocolate Croissant", nameAr: "كرواسون شوكولاتة", category: "Desserts", price: 50, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400" }
+            { id: 1, name: "Espresso", nameAr: "إسبريسو", category: "مشروبات ساخنة", price: 45, image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400" },
+            { id: 2, name: "Hot Spanish Latte", nameAr: "هوت سبانش لاتيه", category: "مشروبات ساخنة", price: 75, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400" },
+            { id: 3, name: "Cappuccino", nameAr: "كابتشينو", category: "مشروبات ساخنة", price: 60, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400" },
+            { id: 4, name: "Iced Spanish Latte", nameAr: "ايس سبانش لاتيه", category: "مشروبات باردة", price: 80, image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400" },
+            { id: 5, name: "Passion Fruit Mojito", nameAr: "موهيتو باشن فروت", category: "مشروبات باردة", price: 65, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400" },
+            { id: 6, name: "Chocolate Cheesecake", nameAr: "تشيز كيك الشوكولاتة", category: "حلويات ومخبوزات", price: 90, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400" },
+            { id: 7, name: "Chocolate Croissant", nameAr: "كرواسون شوكولاتة", category: "حلويات ومخبوزات", price: 50, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400" }
         ];
 
         let products = JSON.parse(localStorage.getItem('okka_products')) || defaultProducts;
         let cart = [];
         let currentFilter = 'all';
         let currentLang = localStorage.getItem('okka_lang') || 'ar';
-        let cafeWhatsApp = localStorage.getItem('okka_whatsapp') || "2010xxxxxxxx"; // ضع رقمك هنا
+        let cafeWhatsApp = localStorage.getItem('okka_whatsapp') || "2010xxxxxxxx";
 
         function applyLanguage() {
             const root = document.getElementById('htmlRoot');
@@ -270,6 +195,7 @@
                 const text = el.getAttribute(`data-${currentLang}`);
                 if (text) el.innerText = text;
             });
+            renderCategories();
             renderMenu();
         }
 
@@ -277,6 +203,30 @@
             currentLang = currentLang === 'ar' ? 'en' : 'ar';
             localStorage.setItem('okka_lang', currentLang);
             applyLanguage();
+        }
+
+        function getCategories() {
+            const cats = new Set(products.map(p => p.category));
+            return ['all', ...Array.from(cats)];
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = '';
+            const cats = getCategories();
+
+            cats.forEach(cat => {
+                const isActive = currentFilter === cat;
+                const displayName = cat === 'all' ? (currentLang === 'ar' ? 'الكل' : 'All Items') : cat;
+                
+                const btn = document.createElement('button');
+                btn.onclick = () => filterCategory(cat);
+                btn.className = `category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition ${
+                    isActive ? 'bg-okka-800 text-white shadow-sm' : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
+                }`;
+                btn.innerText = displayName;
+                container.appendChild(btn);
+            });
         }
 
         function renderMenu() {
@@ -298,7 +248,7 @@
                                 <p class="text-amber-700 font-bold text-base mb-4">${product.price} ج.م</p>
                             </div>
                             <button onclick="addToCart(${product.id})" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-plus text-xs"></i> <span class="lang-text" data-ar="إضافة للسلة" data-en="Add to Cart">${currentLang === 'ar' ? 'إضافة للسلة' : 'Add to Cart'}</span>
+                                <i class="fa-solid fa-plus text-xs"></i> <span>${currentLang === 'ar' ? 'إضافة للسلة' : 'Add to Cart'}</span>
                             </button>
                         </div>
                     </div>
@@ -308,15 +258,7 @@
 
         function filterCategory(cat) {
             currentFilter = cat;
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('bg-okka-800', 'text-white', 'shadow-sm');
-                btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-            });
-            const activeBtn = document.getElementById(`cat-${cat}`);
-            if(activeBtn) {
-                activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-                activeBtn.classList.add('bg-okka-800', 'text-white', 'shadow-sm');
-            }
+            renderCategories();
             renderMenu();
         }
 
@@ -428,65 +370,6 @@
             cart = [];
             updateCartCount();
             closeCheckoutModal();
-        }
-
-        // Admin
-        function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
-        function closeAdminLogin() { document.getElementById('adminLoginModal').classList.add('hidden'); }
-        function verifyAdmin() {
-            if (document.getElementById('adminPin').value === '8899') {
-                closeAdminLogin();
-                document.getElementById('adminPin').value = '';
-                document.getElementById('adminDashboardModal').classList.remove('hidden');
-                document.getElementById('whatsappNumberInput').value = cafeWhatsApp;
-                renderAdminProducts();
-            } else { alert('رمز PIN غير صحيح!'); }
-        }
-        function closeAdminDashboard() { document.getElementById('adminDashboardModal').classList.add('hidden'); renderMenu(); }
-        function saveWhatsAppNumber() {
-            const num = document.getElementById('whatsappNumberInput').value.trim();
-            if(num) { cafeWhatsApp = num; localStorage.setItem('okka_whatsapp', num); alert('تم حفظ الرقم بنجاح!'); }
-        }
-        function renderAdminProducts() {
-            const tbody = document.getElementById('adminProductsTable');
-            tbody.innerHTML = '';
-            products.forEach((p) => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-stone-50">
-                        <td class="p-3 font-bold text-stone-800">${p.nameAr || p.name}</td>
-                        <td class="p-3 text-stone-500 font-bold">${p.category}</td>
-                        <td class="p-3"><input type="number" value="${p.price}" id="price-${p.id}" class="w-24 px-2 py-1 border rounded-lg text-sm font-bold text-right"> ج.م</td>
-                        <td class="p-3 text-center space-x-2 space-x-reverse">
-                            <button onclick="updatePrice(${p.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg text-xs font-bold">حفظ</button>
-                            <button onclick="deleteProduct(${p.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold">حذف</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-        function updatePrice(id) {
-            const newPrice = parseFloat(document.getElementById(`price-${id}`).value);
-            const p = products.find(item => item.id === id);
-            if (p && !isNaN(newPrice)) { p.price = newPrice; localStorage.setItem('okka_products', JSON.stringify(products)); alert('تم التحديث!'); renderAdminProducts(); }
-        }
-        function deleteProduct(id) {
-            if (confirm('هل أنت متأكد من الحذف؟')) {
-                products = products.filter(p => p.id !== id);
-                localStorage.setItem('okka_products', JSON.stringify(products));
-                renderAdminProducts();
-            }
-        }
-        function addNewItem() {
-            const name = document.getElementById('newItemName').value;
-            const category = document.getElementById('newItemCategory').value;
-            const price = parseFloat(document.getElementById('newItemPrice').value);
-            if (!name || isNaN(price)) { alert('الرجاء إدخال البيانات بشكل صحيح.'); return; }
-            products.push({ id: Date.now(), name: name, nameAr: name, category: category, price: price, image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400" });
-            localStorage.setItem('okka_products', JSON.stringify(products));
-            document.getElementById('newItemName').value = '';
-            document.getElementById('newItemPrice').value = '';
-            renderAdminProducts();
-            alert('تمت الإضافة بنجاح!');
         }
 
         applyLanguage();

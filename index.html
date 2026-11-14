@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Okka Cafe | Menu</title>
+    <title>OKKA COFFEE | Menu</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- QRCode.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Cairo Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200');
+            background-size: cover;
+            background-position: center;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -36,27 +39,31 @@
 </head>
 <body class="bg-okka-50 text-stone-800 antialiased min-h-screen flex flex-col">
 
-    <!-- Top Header (Clean for Customers) -->
+    <!-- Top Header -->
     <header class="bg-okka-900 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-3 space-x-reverse">
                 <div class="bg-amber-600 p-2 rounded-xl text-white font-bold text-xl shadow-inner">
                     <i class="fa-solid fa-mug-hot"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-black tracking-wider text-amber-500">Okka Cafe</h1>
-                    <p class="text-xs text-stone-300">Specialty Coffee & Fresh Bakery</p>
+                    <h1 class="text-xl font-black tracking-wider text-amber-500">OKKA <span class="text-white text-sm font-normal">Coffee</span></h1>
+                    <p class="text-xs text-stone-300 lang-text" data-ar="مختصات القهوة والمخبوزات الطازجة" data-en="Specialty Coffee & Fresh Bakery">مختصات القهوة والمخبوزات الطازجة</p>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <!-- Secret Admin Access Button -->
-                <button onclick="openAdminLogin()" class="text-stone-500 hover:text-amber-400 p-2 text-xs transition" title="Admin">
-                    <i class="fa-solid fa-lock text-xs"></i>
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <!-- Language Switcher Button -->
+                <button onclick="toggleLanguage()" class="bg-stone-800 hover:bg-stone-700 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-lg font-bold text-xs transition">
+                    <span id="langBtnText">EN</span>
+                </button>
+                <!-- Admin Lock -->
+                <button onclick="openAdminLogin()" class="text-stone-400 hover:text-amber-400 p-2 text-xs transition" title="Admin">
+                    <i class="fa-solid fa-lock"></i>
                 </button>
                 <!-- Cart Button -->
                 <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-okka-900 px-3 py-1.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-cart-shopping"></i> Cart
+                    <i class="fa-solid fa-cart-shopping"></i> <span class="lang-text" data-ar="السلة" data-en="Cart">السلة</span>
                     <span id="cartCount" class="bg-okka-900 text-white text-xs px-1.5 py-0.5 rounded-full">0</span>
                 </button>
             </div>
@@ -66,28 +73,36 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-6xl mx-auto px-4 py-6 w-full">
         
-        <!-- Welcome Banner -->
-        <div class="bg-gradient-to-r from-okka-900 to-okka-800 text-white rounded-2xl p-6 md:p-8 mb-8 shadow-lg flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30">Welcome to Okka</span>
-                <h2 class="text-2xl md:text-4xl font-black mt-2 mb-2">Authentic Coffee Experience</h2>
-                <p class="text-stone-300 text-sm md:text-base max-w-md">Enjoy our finest beverages and pastries. Order directly from your table easily.</p>
+        <!-- Welcome Banner with Background and Map Button -->
+        <div class="hero-bg text-white rounded-2xl p-6 md:p-10 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 border border-amber-500/20">
+            <div class="text-center md:text-right">
+                <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30 lang-text" data-ar="أهلاً بكم في أوكا" data-en="Welcome to Okka">أهلاً بكم في أوكا</span>
+                <h2 class="text-2xl md:text-4xl font-black mt-2 mb-2 lang-text" data-ar="تجربة قهوة استثنائية" data-en="Authentic Coffee Experience">تجربة قهوة استثنائية</h2>
+                <p class="text-stone-200 text-sm md:text-base max-w-md lang-text" data-ar="استمتع بأفضل المشروبات والمخبوزات الطازجة. اطلب مباشرة من طاولتك بكل سهولة." data-en="Enjoy our finest beverages and pastries. Order directly from your table easily.">استمتع بأفضل المشروبات والمخبوزات الطازجة. اطلب مباشرة من طاولتك بكل سهولة.</p>
+                
+                <!-- Google Maps Link Button -->
+                <div class="mt-4">
+                    <a href="https://maps.app.goo.gl/kcGYo6aU495ce7Dr8" target="_blank" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">
+                        <i class="fa-solid fa-location-dot"></i> <span class="lang-text" data-ar="موقعنا على الخريطة" data-en="Our Location on Map">موقعنا على الخريطة</span>
+                    </a>
+                </div>
             </div>
-            <div class="bg-white/10 p-4 rounded-xl backdrop-blur-md border border-white/10 text-center">
-                <p class="text-xs text-amber-300 font-bold mb-1">Branch Status</p>
+            
+            <div class="bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-white/10 text-center">
+                <p class="text-xs text-amber-300 font-bold mb-1 lang-text" data-ar="حالة الفرع" data-en="Branch Status">حالة الفرع</p>
                 <div class="flex items-center gap-2 justify-center">
                     <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
-                    <span class="text-sm font-bold">Open for Orders</span>
+                    <span class="text-sm font-bold lang-text" data-ar="مفتوح للطلبات" data-en="Open for Orders">مفتوح للطلبات</span>
                 </div>
             </div>
         </div>
 
         <!-- Categories Filter -->
         <div class="flex overflow-x-auto pb-3 mb-6 gap-2 no-scrollbar">
-            <button onclick="filterCategory('all')" id="cat-all" class="category-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-okka-800 text-white shadow-sm transition">All Items</button>
-            <button onclick="filterCategory('Hot Drinks')" id="cat-Hot Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">Hot Drinks</button>
-            <button onclick="filterCategory('Cold Drinks')" id="cat-Cold Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">Cold Drinks</button>
-            <button onclick="filterCategory('Desserts')" id="cat-Desserts" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition">Desserts & Bakery</button>
+            <button onclick="filterCategory('all')" id="cat-all" class="category-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-okka-800 text-white shadow-sm transition lang-text" data-ar="الكل" data-en="All Items">الكل</button>
+            <button onclick="filterCategory('Hot Drinks')" id="cat-Hot Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition lang-text" data-ar="مشروبات ساخنة" data-en="Hot Drinks">مشروبات ساخنة</button>
+            <button onclick="filterCategory('Cold Drinks')" id="cat-Cold Drinks" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition lang-text" data-ar="مشروبات باردة" data-en="Cold Drinks">مشروبات باردة</button>
+            <button onclick="filterCategory('Desserts')" id="cat-Desserts" class="category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-white text-stone-700 hover:bg-stone-100 border border-stone-200 transition lang-text" data-ar="حلويات ومخبوزات" data-en="Desserts & Bakery">حلويات ومخبوزات</button>
         </div>
 
         <!-- Menu Grid -->
@@ -99,14 +114,14 @@
 
     <!-- Footer -->
     <footer class="bg-okka-900 text-stone-400 text-center py-6 border-t border-stone-800 mt-12">
-        <p class="text-sm font-bold">All Rights Reserved © 2026 - Okka Cafe</p>
+        <p class="text-sm font-bold">All Rights Reserved © 2026 - OKKA Coffee</p>
     </footer>
 
     <!-- Cart Drawer -->
-    <div id="cartDrawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
+    <div id="cartDrawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-start">
         <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl">
             <div class="bg-okka-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i> Order Cart</h3>
+                <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping ml-2"></i> <span class="lang-text" data-ar="سلة الطلبات" data-en="Order Cart">سلة الطلبات</span></h3>
                 <button onclick="toggleCart()" class="text-stone-300 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
@@ -116,11 +131,11 @@
 
             <div class="p-4 bg-stone-50 border-t border-stone-200 space-y-3">
                 <div class="flex justify-between font-bold text-lg text-stone-800">
-                    <span>Total:</span>
-                    <span id="cartTotal" class="text-amber-700">0 EGP</span>
+                    <span class="lang-text" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</span>
+                    <span id="cartTotal" class="text-amber-700">0 ج.م</span>
                 </div>
-                <button onclick="openCheckoutModal()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-xl font-bold transition shadow-md">
-                    Proceed to Checkout
+                <button onclick="openCheckoutModal()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-xl font-bold transition shadow-md lang-text" data-ar="إتمام الطلب" data-en="Proceed to Checkout">
+                    إتمام الطلب
                 </button>
             </div>
         </div>
@@ -130,28 +145,28 @@
     <div id="checkoutModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-stone-800">Order Details</h3>
+                <h3 class="font-bold text-lg text-stone-800 lang-text" data-ar="تفاصيل الطلب" data-en="Order Details">تفاصيل الطلب</h3>
                 <button onclick="closeCheckoutModal()" class="text-stone-400 hover:text-stone-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-bold text-stone-600 mb-1">Customer Name</label>
-                    <input type="text" id="customerName" placeholder="Enter your name" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                    <label class="block text-xs font-bold text-stone-600 mb-1 lang-text" data-ar="اسم العميل" data-en="Customer Name">اسم العميل</label>
+                    <input type="text" id="customerName" placeholder="أدخل اسمك" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-right">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-stone-600 mb-1">Order Type</label>
+                    <label class="block text-xs font-bold text-stone-600 mb-1 lang-text" data-ar="نوع الطلب" data-en="Order Type">نوع الطلب</label>
                     <select id="orderType" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
-                        <option value="Dine-In">Dine-In (Table)</option>
-                        <option value="Takeaway">Takeaway (Counter Pickup)</option>
+                        <option value="Dine-In" class="lang-text" data-ar="محلي (على الطاولة)" data-en="Dine-In">محلي (على الطاولة)</option>
+                        <option value="Takeaway" class="lang-text" data-ar="تيك أواي (استلام من الكاشير)" data-en="Takeaway">تيك أواي (استلام من الكاشير)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-stone-600 mb-1">Table No / Notes</label>
-                    <input type="text" id="tableNo" placeholder="e.g. Table 4" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                    <label class="block text-xs font-bold text-stone-600 mb-1 lang-text" data-ar="رقم الطاولة / ملاحظات" data-en="Table No / Notes">رقم الطاولة / ملاحظات</label>
+                    <input type="text" id="tableNo" placeholder="مثال: طاولة رقم 4" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-right">
                 </div>
             </div>
             <button onclick="submitOrderWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Send Order via WhatsApp
+                <i class="fa-brands fa-whatsapp text-lg"></i> <span class="lang-text" data-ar="إرسال الطلب عبر واتساب" data-en="Send Order via WhatsApp">إرسال الطلب عبر واتساب</span>
             </button>
         </div>
     </div>
@@ -160,15 +175,15 @@
     <div id="adminLoginModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-stone-800">Admin Login</h3>
+                <h3 class="font-bold text-lg text-stone-800">تسجيل دخول الأدمن</h3>
                 <button onclick="closeAdminLogin()" class="text-stone-400 hover:text-stone-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1">PIN Code</label>
-                <input type="password" id="adminPin" placeholder="Enter PIN" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                <label class="block text-xs font-bold text-stone-600 mb-1">الرمز السري (PIN)</label>
+                <input type="password" id="adminPin" placeholder="أدخل الرمز السري" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-center">
             </div>
             <button onclick="verifyAdmin()" class="w-full bg-okka-900 hover:bg-black text-white py-2.5 rounded-xl font-bold transition text-sm">
-                Login
+                دخول
             </button>
         </div>
     </div>
@@ -176,47 +191,46 @@
     <!-- Admin Dashboard Modal -->
     <div id="adminDashboardModal" class="fixed inset-0 bg-stone-900 z-50 hidden flex flex-col text-stone-800">
         <div class="bg-okka-900 text-white p-4 flex justify-between items-center shadow-md">
-            <h3 class="font-bold text-lg"><i class="fa-solid fa-gauge-high mr-2"></i> Okka Management Dashboard</h3>
+            <h3 class="font-bold text-lg"><i class="fa-solid fa-gauge-high ml-2"></i> لوحة تحكم أوكا</h3>
             <button onclick="closeAdminDashboard()" class="text-stone-300 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="flex-grow overflow-y-auto p-4 md:p-6 max-w-5xl mx-auto w-full space-y-6">
             
             <!-- WhatsApp Settings Box -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
-                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-brands fa-whatsapp text-green-600 mr-1"></i> WhatsApp Orders Number</h4>
+                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-brands fa-whatsapp text-green-600 ml-1"></i> رقم واتساب لاستقبال الطلبات</h4>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="whatsappNumberInput" placeholder="e.g. 201012345678" class="flex-grow px-3 py-2 border rounded-xl text-sm">
-                    <button onclick="saveWhatsAppNumber()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-5 py-2 rounded-xl text-sm transition">Save Number</button>
+                    <input type="text" id="whatsappNumberInput" placeholder="مثال: 201012345678" class="flex-grow px-3 py-2 border rounded-xl text-sm text-right">
+                    <button onclick="saveWhatsAppNumber()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-5 py-2 rounded-xl text-sm transition">حفظ الرقم</button>
                 </div>
-                <p class="text-xs text-stone-400 mt-1">Enter number with country code (e.g., 20 for Egypt) without '+' or spaces.</p>
             </div>
 
             <!-- Add New Item -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
-                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-plus-circle text-amber-600 mr-1"></i> Add New Menu Item</h4>
+                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-plus-circle text-amber-600 ml-1"></i> إضافة صنف جديد</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                    <input type="text" id="newItemName" placeholder="Item Name" class="px-3 py-2 border rounded-xl text-sm">
+                    <input type="text" id="newItemName" placeholder="اسم الصنف" class="px-3 py-2 border rounded-xl text-sm text-right">
                     <select id="newItemCategory" class="px-3 py-2 border rounded-xl text-sm">
-                        <option value="Hot Drinks">Hot Drinks</option>
-                        <option value="Cold Drinks">Cold Drinks</option>
-                        <option value="Desserts">Desserts & Bakery</option>
+                        <option value="Hot Drinks">مشروبات ساخنة</option>
+                        <option value="Cold Drinks">مشروبات باردة</option>
+                        <option value="Desserts">حلويات ومخبوزات</option>
                     </select>
-                    <input type="number" id="newItemPrice" placeholder="Price (EGP)" class="px-3 py-2 border rounded-xl text-sm">
-                    <button onclick="addNewItem()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-xl text-sm transition">Add Item</button>
+                    <input type="number" id="newItemPrice" placeholder="السعر (ج.م)" class="px-3 py-2 border rounded-xl text-sm text-right">
+                    <button onclick="addNewItem()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-xl text-sm transition">إضافة الصنف</button>
                 </div>
             </div>
 
             <!-- Products Table -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200">
-                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-list text-amber-600 mr-1"></i> Manage Prices & Items</h4>
+                <h4 class="font-bold text-stone-700 mb-3 text-sm"><i class="fa-solid fa-list text-amber-600 ml-1"></i> إدارة الأسعار والأصناف</h4>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-right text-sm">
                         <thead class="bg-stone-50 border-b text-stone-600">
                             <tr>
-                                <th class="p-3">Item Name</th>
-                                <th class="p-3">Category</th>
-                                <th class="p-3">Price (EGP)</th>
-                                <th class="p-3 text-center">Actions</th>
+                                <th class="p-3">اسم الصنف</th>
+                                <th class="p-3">القسم</th>
+                                <th class="p-3">السعر (ج.م)</th>
+                                <th class="p-3 text-center">الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="adminProductsTable" class="divide-y divide-stone-100">
@@ -231,21 +245,39 @@
     <!-- Script Application -->
     <script>
         const defaultProducts = [
-            { id: 1, name: "Espresso", category: "Hot Drinks", price: 45, image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400" },
-            { id: 2, name: "Hot Spanish Latte", category: "Hot Drinks", price: 75, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400" },
-            { id: 3, name: "Cappuccino", category: "Hot Drinks", price: 60, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400" },
-            { id: 4, name: "Iced Spanish Latte", category: "Cold Drinks", price: 80, image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400" },
-            { id: 5, name: "Passion Fruit Mojito", category: "Cold Drinks", price: 65, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400" },
-            { id: 6, name: "Chocolate Cheesecake", category: "Desserts", price: 90, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400" },
-            { id: 7, name: "Chocolate Croissant", category: "Desserts", price: 50, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400" }
+            { id: 1, name: "Espresso", nameAr: "إسبريسو", category: "Hot Drinks", price: 45, image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400" },
+            { id: 2, name: "Hot Spanish Latte", nameAr: "هوت سبانش لاتيه", category: "Hot Drinks", price: 75, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400" },
+            { id: 3, name: "Cappuccino", nameAr: "كابتشينو", category: "Hot Drinks", price: 60, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400" },
+            { id: 4, name: "Iced Spanish Latte", nameAr: "ايس سبانش لاتيه", category: "Cold Drinks", price: 80, image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400" },
+            { id: 5, name: "Passion Fruit Mojito", nameAr: "موهيتو باشن فروت", category: "Cold Drinks", price: 65, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400" },
+            { id: 6, name: "Chocolate Cheesecake", nameAr: "تشيز كيك الشوكولاتة", category: "Desserts", price: 90, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400" },
+            { id: 7, name: "Chocolate Croissant", nameAr: "كرواسون شوكولاتة", category: "Desserts", price: 50, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400" }
         ];
 
         let products = JSON.parse(localStorage.getItem('okka_products')) || defaultProducts;
         let cart = [];
         let currentFilter = 'all';
-        
-        // 📌 الرقم الافتراضي للواتساب (قم بتغيير "2010xxxxxxxx" إلى رقمك الصحيح بالمفتاح الدولي ليعمل تلقائياً على كل الأجهزة)
-        let cafeWhatsApp = localStorage.getItem('okka_whatsapp') || "2010XXXXXX";
+        let currentLang = localStorage.getItem('okka_lang') || 'ar';
+        let cafeWhatsApp = localStorage.getItem('okka_whatsapp') || "2010xxxxxxxx"; // ضع رقمك هنا
+
+        function applyLanguage() {
+            const root = document.getElementById('htmlRoot');
+            root.setAttribute('lang', currentLang);
+            root.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('langBtnText').innerText = currentLang === 'ar' ? 'EN' : 'AR';
+
+            document.querySelectorAll('.lang-text').forEach(el => {
+                const text = el.getAttribute(`data-${currentLang}`);
+                if (text) el.innerText = text;
+            });
+            renderMenu();
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('okka_lang', currentLang);
+            applyLanguage();
+        }
 
         function renderMenu() {
             const grid = document.getElementById('menuGrid');
@@ -253,19 +285,20 @@
             const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
 
             filtered.forEach(product => {
+                const displayName = currentLang === 'ar' ? (product.nameAr || product.name) : product.name;
                 grid.innerHTML += `
                     <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
                         <div class="h-48 overflow-hidden relative">
-                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 bg-okka-900/80 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-bold">${product.category}</span>
+                            <img src="${product.image}" alt="${displayName}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 ${currentLang === 'ar' ? 'right-3' : 'left-3'} bg-okka-900/80 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-bold">${product.category}</span>
                         </div>
                         <div class="p-4 flex flex-col flex-grow justify-between">
                             <div>
-                                <h3 class="font-bold text-stone-800 text-lg mb-1">${product.name}</h3>
-                                <p class="text-amber-700 font-bold text-base mb-4">${product.price} EGP</p>
+                                <h3 class="font-bold text-stone-800 text-lg mb-1">${displayName}</h3>
+                                <p class="text-amber-700 font-bold text-base mb-4">${product.price} ج.م</p>
                             </div>
                             <button onclick="addToCart(${product.id})" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-plus text-xs"></i> Add to Cart
+                                <i class="fa-solid fa-plus text-xs"></i> <span class="lang-text" data-ar="إضافة للسلة" data-en="Add to Cart">${currentLang === 'ar' ? 'إضافة للسلة' : 'Add to Cart'}</span>
                             </button>
                         </div>
                     </div>
@@ -280,8 +313,10 @@
                 btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-200');
             });
             const activeBtn = document.getElementById(`cat-${cat}`);
-            activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-            activeBtn.classList.add('bg-okka-800', 'text-white', 'shadow-sm');
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
+                activeBtn.classList.add('bg-okka-800', 'text-white', 'shadow-sm');
+            }
             renderMenu();
         }
 
@@ -313,19 +348,20 @@
             container.innerHTML = '';
 
             if (cart.length === 0) {
-                container.innerHTML = `<p class="text-center text-stone-400 py-8 text-sm font-bold">Your cart is empty.</p>`;
-                document.getElementById('cartTotal').innerText = '0 EGP';
+                container.innerHTML = `<p class="text-center text-stone-400 py-8 text-sm font-bold">${currentLang === 'ar' ? 'السلة فارغة' : 'Your cart is empty.'}</p>`;
+                document.getElementById('cartTotal').innerText = `0 ج.م`;
                 return;
             }
 
             let total = 0;
             cart.forEach((item, index) => {
                 total += item.price * item.qty;
+                const displayName = currentLang === 'ar' ? (item.nameAr || item.name) : item.name;
                 container.innerHTML += `
                     <div class="py-3 flex justify-between items-center text-sm">
                         <div>
-                            <p class="font-bold text-stone-800">${item.name}</p>
-                            <p class="text-xs text-amber-700 font-bold">${item.price} EGP</p>
+                            <p class="font-bold text-stone-800">${displayName}</p>
+                            <p class="text-xs text-amber-700 font-bold">${item.price} ج.م</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-600 hover:bg-stone-200">-</button>
@@ -336,7 +372,7 @@
                 `;
             });
 
-            document.getElementById('cartTotal').innerText = `${total} EGP`;
+            document.getElementById('cartTotal').innerText = `${total} ج.م`;
         }
 
         function changeQty(index, delta) {
@@ -350,7 +386,7 @@
 
         function openCheckoutModal() {
             if (cart.length === 0) {
-                alert('Your cart is empty!');
+                alert(currentLang === 'ar' ? 'السلة فارغة!' : 'Your cart is empty!');
                 return;
             }
             toggleCart();
@@ -367,23 +403,24 @@
             const tableNo = document.getElementById('tableNo').value;
 
             if (!name) {
-                alert('Please enter your name.');
+                alert(currentLang === 'ar' ? 'الرجاء إدخال اسم العميل.' : 'Please enter your name.');
                 return;
             }
 
-            let orderText = `*New Order - Okka Cafe* %0a`;
-            orderText += `👤 *Customer:* ${name} %0a`;
-            orderText += `📌 *Type:* ${orderType} %0a`;
-            if(tableNo) orderText += `📍 *Table/Notes:* ${tableNo} %0a%0a`;
-            orderText += `🛍️ *Items:* %0a`;
+            let orderText = `*طلب جديد - OKKA Coffee* %0a`;
+            orderText += `👤 *العميل:* ${name} %0a`;
+            orderText += `📌 *النوع:* ${orderType} %0a`;
+            if(tableNo) orderText += `📍 *الطاولة/ملاحظات:* ${tableNo} %0a%0a`;
+            orderText += `🛍️ *الأصناف:* %0a`;
 
             let total = 0;
             cart.forEach(item => {
-                orderText += `- ${item.name} (${item.qty}x) = ${item.price * item.qty} EGP %0a`;
+                const displayName = item.nameAr || item.name;
+                orderText += `- ${displayName} (${item.qty}x) = ${item.price * item.qty} ج.م %0a`;
                 total += item.price * item.qty;
             });
 
-            orderText += `%0a💰 *Total Amount:* *${total} EGP*`;
+            orderText += `%0a💰 *الإجمالي الكلي:* *${total} ج.م*`;
 
             const url = `https://wa.me/${cafeWhatsApp}?text=${orderText}`;
             window.open(url, '_blank');
@@ -393,116 +430,66 @@
             closeCheckoutModal();
         }
 
-        // Admin Security & Dashboard
-        function openAdminLogin() {
-            document.getElementById('adminLoginModal').classList.remove('hidden');
-        }
-
-        function closeAdminLogin() {
-            document.getElementById('adminLoginModal').classList.add('hidden');
-        }
-
+        // Admin
+        function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
+        function closeAdminLogin() { document.getElementById('adminLoginModal').classList.add('hidden'); }
         function verifyAdmin() {
-            const pin = document.getElementById('adminPin').value;
-            if (pin === '8899') {
+            if (document.getElementById('adminPin').value === '8899') {
                 closeAdminLogin();
                 document.getElementById('adminPin').value = '';
-                openAdminDashboard();
-            } else {
-                alert('Incorrect PIN code!');
-            }
+                document.getElementById('adminDashboardModal').classList.remove('hidden');
+                document.getElementById('whatsappNumberInput').value = cafeWhatsApp;
+                renderAdminProducts();
+            } else { alert('رمز PIN غير صحيح!'); }
         }
-
-        function openAdminDashboard() {
-            document.getElementById('adminDashboardModal').classList.remove('hidden');
-            document.getElementById('whatsappNumberInput').value = cafeWhatsApp;
-            renderAdminProducts();
-        }
-
-        function closeAdminDashboard() {
-            document.getElementById('adminDashboardModal').classList.add('hidden');
-            renderMenu();
-        }
-
+        function closeAdminDashboard() { document.getElementById('adminDashboardModal').classList.add('hidden'); renderMenu(); }
         function saveWhatsAppNumber() {
             const num = document.getElementById('whatsappNumberInput').value.trim();
-            if(!num) {
-                alert('Please enter a valid WhatsApp number.');
-                return;
-            }
-            cafeWhatsApp = num;
-            localStorage.setItem('okka_whatsapp', num);
-            alert('WhatsApp number saved successfully!');
+            if(num) { cafeWhatsApp = num; localStorage.setItem('okka_whatsapp', num); alert('تم حفظ الرقم بنجاح!'); }
         }
-
         function renderAdminProducts() {
             const tbody = document.getElementById('adminProductsTable');
             tbody.innerHTML = '';
-
-            products.forEach((product) => {
+            products.forEach((p) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-stone-50">
-                        <td class="p-3 font-bold text-stone-800">${product.name}</td>
-                        <td class="p-3 text-stone-500 font-bold">${product.category}</td>
-                        <td class="p-3">
-                            <input type="number" value="${product.price}" id="price-${product.id}" class="w-24 px-2 py-1 border rounded-lg text-sm font-bold"> EGP
-                        </td>
-                        <td class="p-3 text-center space-x-2">
-                            <button onclick="updatePrice(${product.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg text-xs font-bold">Save</button>
-                            <button onclick="deleteProduct(${product.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold">Delete</button>
+                        <td class="p-3 font-bold text-stone-800">${p.nameAr || p.name}</td>
+                        <td class="p-3 text-stone-500 font-bold">${p.category}</td>
+                        <td class="p-3"><input type="number" value="${p.price}" id="price-${p.id}" class="w-24 px-2 py-1 border rounded-lg text-sm font-bold text-right"> ج.م</td>
+                        <td class="p-3 text-center space-x-2 space-x-reverse">
+                            <button onclick="updatePrice(${p.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg text-xs font-bold">حفظ</button>
+                            <button onclick="deleteProduct(${p.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold">حذف</button>
                         </td>
                     </tr>
                 `;
             });
         }
-
         function updatePrice(id) {
             const newPrice = parseFloat(document.getElementById(`price-${id}`).value);
-            const product = products.find(p => p.id === id);
-            if (product && !isNaN(newPrice)) {
-                product.price = newPrice;
-                localStorage.setItem('okka_products', JSON.stringify(products));
-                alert('Price updated successfully!');
-                renderAdminProducts();
-            }
+            const p = products.find(item => item.id === id);
+            if (p && !isNaN(newPrice)) { p.price = newPrice; localStorage.setItem('okka_products', JSON.stringify(products)); alert('تم التحديث!'); renderAdminProducts(); }
         }
-
         function deleteProduct(id) {
-            if (confirm('Are you sure you want to delete this item?')) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
                 products = products.filter(p => p.id !== id);
                 localStorage.setItem('okka_products', JSON.stringify(products));
                 renderAdminProducts();
             }
         }
-
         function addNewItem() {
             const name = document.getElementById('newItemName').value;
             const category = document.getElementById('newItemCategory').value;
             const price = parseFloat(document.getElementById('newItemPrice').value);
-
-            if (!name || isNaN(price)) {
-                alert('Please enter a valid item name and price.');
-                return;
-            }
-
-            const newItem = {
-                id: Date.now(),
-                name: name,
-                category: category,
-                price: price,
-                image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400"
-            };
-
-            products.push(newItem);
+            if (!name || isNaN(price)) { alert('الرجاء إدخال البيانات بشكل صحيح.'); return; }
+            products.push({ id: Date.now(), name: name, nameAr: name, category: category, price: price, image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400" });
             localStorage.setItem('okka_products', JSON.stringify(products));
-            
             document.getElementById('newItemName').value = '';
             document.getElementById('newItemPrice').value = '';
             renderAdminProducts();
-            alert('Item added successfully!');
+            alert('تمت الإضافة بنجاح!');
         }
 
-        renderMenu();
+        applyLanguage();
     </script>
 </body>
 </html>

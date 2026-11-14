@@ -13,15 +13,9 @@
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://raw.githubusercontent.com/eabdo5110-sudo/okka-menu/main/banner.jpg');
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200');
             background-size: cover;
             background-position: center;
-        }
-        /* Custom exact logo styling matching user sign image */
-        .okka-logo-box {
-            background: #2a1508;
-            border: 1px solid rgba(217, 119, 6, 0.4);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
         }
     </style>
     <script>
@@ -47,32 +41,31 @@
 
     <!-- Top Header -->
     <header class="bg-okka-900 text-white shadow-md sticky top-0 z-50 border-b border-amber-900/30">
-        <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <!-- Exact Matching Logo from User Image -->
-            <div class="flex items-center space-x-2.5 space-x-reverse">
-                <div class="okka-logo-box px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-md">
-                    <!-- Coffee Bean Icon -->
-                    <div class="w-5 h-7 bg-amber-100 rounded-full relative overflow-hidden flex items-center justify-center transform -rotate-12 shadow-sm">
-                        <div class="absolute w-0.5 h-full bg-amber-900 rounded-full transform rotate-12"></div>
+            <!-- Matching Logo based on user uploaded image -->
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-11 h-11 bg-amber-500/10 border border-amber-500/40 rounded-2xl flex items-center justify-center shadow-inner text-amber-500">
+                    <i class="fa-solid fa-mug-saucer text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1">
+                        <span class="text-xl font-black tracking-wider text-amber-500">Okka</span>
+                        <span class="text-white text-xs font-bold tracking-widest uppercase bg-stone-800 px-1.5 py-0.5 rounded">Coffee</span>
                     </div>
-                    <!-- OKKA COFFEE text layout -->
-                    <div class="flex flex-col">
-                        <span class="text-amber-400 font-black text-lg tracking-wider leading-none">OKKA</span>
-                        <span class="text-stone-200 text-[10px] font-bold tracking-widest uppercase mt-0.5 text-center bg-stone-900/80 px-1 rounded">Coffee</span>
-                    </div>
+                    <span class="text-[11px] text-stone-300 font-medium lang-text" data-ar="مختصات القهوة والمخبوزات الطازجة" data-en="Specialty Coffee & Fresh Bakery">مختصات القهوة والمخبوزات الطازجة</span>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-2.5 space-x-reverse">
+            <div class="flex items-center space-x-3 space-x-reverse">
                 <!-- Language Switcher Button -->
-                <button onclick="toggleLanguage()" class="bg-stone-800 hover:bg-stone-700 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-lg font-bold text-xs transition">
+                <button onclick="toggleLanguage()" class="bg-stone-800 hover:bg-stone-700 text-amber-400 border border-amber-500/30 px-3.5 py-2 rounded-xl font-bold text-xs transition shadow-sm">
                     <span id="langBtnText">EN</span>
                 </button>
                 <!-- Cart Button -->
-                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-okka-900 px-3 py-1.5 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-1.5 shadow-sm">
+                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-okka-900 px-4 py-2 rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-md">
                     <i class="fa-solid fa-cart-shopping"></i> <span class="lang-text" data-ar="السلة" data-en="Cart">السلة</span>
-                    <span id="cartCount" class="bg-okka-900 text-white text-xs px-1.5 py-0.5 rounded-full">0</span>
+                    <span id="cartCount" class="bg-okka-900 text-white text-xs px-2 py-0.5 rounded-full">0</span>
                 </button>
             </div>
         </div>
@@ -81,32 +74,32 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-6xl mx-auto px-4 py-6 w-full">
         
-        <!-- Welcome Banner using real shop sign image -->
-        <div class="hero-bg text-white rounded-2xl p-6 md:p-10 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 border border-amber-500/20">
-            <div class="text-center md:text-right space-y-2">
-                <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-amber-500/30 lang-text" data-ar="مرحباً بك في وجهتك المفضلة" data-en="Welcome to Your Favorite Spot">مرحباً بك في وجهتك المفضلة</span>
+        <!-- Welcome Banner -->
+        <div class="hero-bg text-white rounded-3xl p-6 md:p-10 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 border border-amber-500/20">
+            <div class="text-center md:text-right space-y-3">
+                <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider border border-amber-500/30 lang-text" data-ar="مرحباً بك في وجهتك المفضلة" data-en="Welcome to Your Favorite Spot">مرحباً بك في وجهتك المفضلة</span>
                 <h2 class="text-2xl md:text-4xl font-black lang-text" data-ar="استمتع بأجمل الأوقات وألذ المشروبات" data-en="Enjoy Great Moments & Fine Drinks">استمتع بأجمل الأوقات وألذ المشروبات</h2>
                 <p class="text-stone-200 text-sm md:text-base max-w-md lang-text" data-ar="نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً." data-en="We serve you the finest handcrafted beverages and freshly baked goods daily.">نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً.</p>
                 
                 <!-- Google Maps Link Button -->
                 <div class="pt-2">
-                    <a href="https://maps.app.goo.gl/kcGYo6aU495ce7Dr8" target="_blank" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">
+                    <a href="https://maps.app.goo.gl/kcGYo6aU495ce7Dr8" target="_blank" class="inline-flex items-center gap-2.5 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition shadow-md">
                         <i class="fa-solid fa-location-dot"></i> <span class="lang-text" data-ar="زورنا في الكافيه (خرائط جوجل)" data-en="Visit Us (Google Maps)">زورنا في الكافيه (خرائط جوجل)</span>
                     </a>
                 </div>
             </div>
             
-            <div class="bg-black/40 p-4 rounded-2xl backdrop-blur-md border border-white/10 text-center shrink-0">
+            <div class="bg-black/40 p-5 rounded-2xl backdrop-blur-md border border-white/10 text-center shrink-0">
                 <p class="text-xs text-amber-300 font-bold mb-1 lang-text" data-ar="حالة الكافيه" data-en="Cafe Status">حالة الكافيه</p>
                 <div class="flex items-center gap-2 justify-center">
-                    <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="w-3.5 h-3.5 bg-green-500 rounded-full animate-pulse"></span>
                     <span class="text-sm font-bold lang-text" data-ar="مفتوح الآن" data-en="Open Now">مفتوح الآن</span>
                 </div>
             </div>
         </div>
 
-        <!-- Categories Filter Container -->
-        <div id="categoriesContainer" class="flex overflow-x-auto pb-3 mb-6 gap-2 no-scrollbar">
+        <!-- Categories Filter Container with Larger, Clearer Buttons -->
+        <div id="categoriesContainer" class="flex overflow-x-auto pb-4 mb-6 gap-3 no-scrollbar">
             <!-- Dynamic Category Buttons -->
         </div>
 
@@ -139,7 +132,7 @@
                     <span class="lang-text" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</span>
                     <span id="cartTotal" class="text-amber-700">0 ج.م</span>
                 </div>
-                <button onclick="openCheckoutModal()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-xl font-bold transition shadow-md lang-text" data-ar="إتمام الطلب" data-en="Proceed to Checkout">
+                <button onclick="openCheckoutModal()" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3.5 rounded-xl font-bold transition shadow-md lang-text text-base" data-ar="إتمام الطلب" data-en="Proceed to Checkout">
                     إتمام الطلب
                 </button>
             </div>
@@ -148,7 +141,7 @@
 
     <!-- Checkout Modal -->
     <div id="checkoutModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <h3 class="font-bold text-lg text-stone-800 lang-text" data-ar="تفاصيل الطلب" data-en="Order Details">تفاصيل الطلب</h3>
                 <button onclick="closeCheckoutModal()" class="text-stone-400 hover:text-stone-600"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -156,21 +149,21 @@
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-stone-600 mb-1 lang-text" data-ar="اسم العميل" data-en="Customer Name">اسم العميل</label>
-                    <input type="text" id="customerName" placeholder="أدخل اسمك" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-right">
+                    <input type="text" id="customerName" placeholder="أدخل اسمك" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-right">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-stone-600 mb-1 lang-text" data-ar="نوع الطلب" data-en="Order Type">نوع الطلب</label>
-                    <select id="orderType" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
+                    <select id="orderType" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm">
                         <option value="Dine-In" class="lang-text" data-ar="محلي (على الطاولة)" data-en="Dine-In">محلي (على الطاولة)</option>
                         <option value="Takeaway" class="lang-text" data-ar="تيك أواي (استلام من الكاشير)" data-en="Takeaway">تيك أواي (استلام من الكاشير)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-stone-600 mb-1 lang-text" data-ar="رقم الطاولة / ملاحظات" data-en="Table No / Notes">رقم الطاولة / ملاحظات</label>
-                    <input type="text" id="tableNo" placeholder="مثال: طاولة رقم 4" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-right">
+                    <input type="text" id="tableNo" placeholder="مثال: طاولة رقم 4" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm text-right">
                 </div>
             </div>
-            <button onclick="submitOrderWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2">
+            <button onclick="submitOrderWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-bold transition shadow-md flex items-center justify-center gap-2 text-base">
                 <i class="fa-brands fa-whatsapp text-lg"></i> <span class="lang-text" data-ar="إرسال الطلب عبر واتساب" data-en="Send Order via WhatsApp">إرسال الطلب عبر واتساب</span>
             </button>
         </div>
@@ -231,8 +224,8 @@
                 
                 const btn = document.createElement('button');
                 btn.onclick = () => filterCategory(cat);
-                btn.className = `category-btn px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition ${
-                    isActive ? 'bg-okka-800 text-white shadow-sm' : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
+                btn.className = `category-btn px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition shadow-sm ${
+                    isActive ? 'bg-okka-800 text-white shadow-md scale-105' : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
                 }`;
                 btn.innerText = displayName;
                 container.appendChild(btn);
@@ -247,17 +240,17 @@
             filtered.forEach(product => {
                 const displayName = currentLang === 'ar' ? (product.nameAr || product.name) : product.name;
                 grid.innerHTML += `
-                    <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+                    <div class="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
                         <div class="h-48 overflow-hidden relative">
                             <img src="${product.image}" alt="${displayName}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 ${currentLang === 'ar' ? 'right-3' : 'left-3'} bg-okka-900/80 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-bold">${product.category}</span>
+                            <span class="absolute top-3 ${currentLang === 'ar' ? 'right-3' : 'left-3'} bg-okka-900/80 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full font-bold">${product.category}</span>
                         </div>
-                        <div class="p-4 flex flex-col flex-grow justify-between">
+                        <div class="p-5 flex flex-col flex-grow justify-between">
                             <div>
                                 <h3 class="font-bold text-stone-800 text-lg mb-1">${displayName}</h3>
                                 <p class="text-amber-700 font-bold text-base mb-4">${product.price} ج.م</p>
                             </div>
-                            <button onclick="addToCart(${product.id})" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2">
+                            <button onclick="addToCart(${product.id})" class="w-full bg-okka-800 hover:bg-okka-900 text-white py-3 rounded-2xl font-bold text-sm transition flex items-center justify-center gap-2 shadow-sm">
                                 <i class="fa-solid fa-plus text-xs"></i> <span>${currentLang === 'ar' ? 'إضافة للسلة' : 'Add to Cart'}</span>
                             </button>
                         </div>
@@ -316,9 +309,9 @@
                             <p class="text-xs text-amber-700 font-bold">${item.price} ج.م</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-600 hover:bg-stone-200">-</button>
-                            <span class="font-bold text-stone-800 w-5 text-center">${item.qty}</span>
-                            <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-stone-100 rounded-lg font-bold text-stone-600 hover:bg-stone-200">+</button>
+                            <button onclick="changeQty(${index}, -1)" class="w-8 h-8 bg-stone-100 rounded-xl font-bold text-stone-600 hover:bg-stone-200">-</button>
+                            <span class="font-bold text-stone-800 w-6 text-center">${item.qty}</span>
+                            <button onclick="changeQty(${index}, 1)" class="w-8 h-8 bg-stone-100 rounded-xl font-bold text-stone-600 hover:bg-stone-200">+</button>
                         </div>
                     </div>
                 `;

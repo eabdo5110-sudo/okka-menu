@@ -922,7 +922,7 @@
                             <i class="fa-brands fa-facebook-f"></i>
                             <span id="lbl-fb">فيسبوك</span>
                         </a>
-                        <a href="https://wa.me/201000000000" target="_blank" class="social-col-card btn-whatsapp">
+                        <a href="https://wa.me/201553748198" target="_blank" class="social-col-card btn-whatsapp">
                             <i class="fa-brands fa-whatsapp"></i>
                             <span id="lbl-wa">واتساب</span>
                         </a>
@@ -986,15 +986,15 @@
             <div class="footer-col">
                 <h4 id="ft-hours-title">مواعيد العمل</h4>
                 <ul>
-                    <li><i class="fa-regular fa-clock"></i> <span id="ft-hours-1">السبت - الخميس: 7:00 ص - 12:00 م</span></li>
+                    <li><i class="fa-regular fa-clock"></i> <span id="ft-hours-1">السبت - الخميس: 7:00 ص - 12:00 ص</span></li>
                     <li><i class="fa-regular fa-clock"></i> <span id="ft-hours-2">الجمعة: 1:00 م - 1:00 ص</span></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4 id="ft-contact-title">بيانات الاتصال</h4>
                 <ul>
-                    <li><i class="fa-solid fa-phone"></i> 01000000000</li>
-                    <li><i class="fa-solid fa-envelope"></i> contact@okka.coffee</li>
+                    <li><i class="fa-solid fa-phone"></i> <span dir="ltr">015 53748198</span></li>
+                    <li><i class="fa-solid fa-envelope"></i> Aoka474@gmail.com</li>
                     <li><i class="fa-solid fa-location-dot"></i> <span id="ft-address">شارع القهوة الرئيسية، المدينة</span></li>
                 </ul>
             </div>
@@ -1055,11 +1055,25 @@
         // التحقق من حالة الكافيه (مفتوح / مغلق)
         function checkCafeStatus() {
             const now = new Date();
+            const day = now.getDay(); // 0 = الأحد ... 5 = الجمعة، 6 = السبت
             const hour = now.getHours();
             const indicator = document.getElementById('cafe-status-indicator');
             const statusText = document.getElementById('cafe-status-text');
 
-            if (hour >= 7 && hour < 24) {
+            let isOpen = false;
+
+            if (day === 5) {
+                // الجمعة: من 1:00 ظهراً (13) حتى 1:00 صباحاً (الساعة 0 من فجر السبت)
+                isOpen = (hour >= 13 && hour < 24);
+            } else if (day === 6) {
+                // السبت: يمتد من 12:00 ص حتى 1:00 ص (تكملة سهرة الجمعة)، ثم يفتح من 7:00 ص حتى 12:00 ص
+                isOpen = (hour === 0) || (hour >= 7 && hour < 24);
+            } else {
+                // باقي أيام الأسبوع (الأحد - الخميس): من 7:00 صباحاً حتى 12:00 صباحاً
+                isOpen = (hour >= 7 && hour < 24);
+            }
+
+            if (isOpen) {
                 indicator.className = 'status-pulse status-open';
                 statusText.textContent = currentLang === 'ar' ? 'مفتوح الآن' : 'Open Now';
                 statusText.style.color = '#1e8449';
@@ -1196,7 +1210,7 @@
                 showToast(currentLang === 'ar' ? 'السلة فارغة! أضف بعض المنتجات أولاً.' : 'Your cart is empty! Please add items first.');
                 return;
             }
-            const phoneNumber = "201000000000";
+            const phoneNumber = "201553748198";
             let message = "مرحباً okka Coffee، أود طلب الآتي:\n\n";
             let total = 0;
 
@@ -1283,7 +1297,7 @@
                 document.getElementById('ft-about-title').textContent = 'عن okka Coffee';
                 document.getElementById('ft-about-desc').textContent = 'وجهتك الأولى للاستمتاع بأجود أنواع القهوة المختصة والمحمصة بعناية فائقة لتناسب ذوقك الرفيع.';
                 document.getElementById('ft-hours-title').textContent = 'مواعيد العمل';
-                document.getElementById('ft-hours-1').textContent = 'السبت - الخميس: 7:00 ص - 12:00 م';
+                document.getElementById('ft-hours-1').textContent = 'السبت - الخميس: 7:00 ص - 12:00 ص';
                 document.getElementById('ft-hours-2').textContent = 'الجمعة: 1:00 م - 1:00 ص';
                 document.getElementById('ft-contact-title').textContent = 'بيانات الاتصال';
                 document.getElementById('ft-address').textContent = 'شارع القهوة الرئيسية، المدينة';

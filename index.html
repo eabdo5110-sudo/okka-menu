@@ -281,7 +281,46 @@
             transform: translateY(-3px);
         }
 
-        /* 3. الأعمدة الأربعة */
+        /* 3. شبكة الكروت التفاعلية في الموبايل (مثل Uni Market تتحرك مع السكرول) */
+        .mobile-cards-grid {
+            display: none; /* مخفية في الشاشات الكبيرة وتظهر في الموبايل */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            padding: 0 10px;
+        }
+
+        .mobile-card-item {
+            background: var(--card-bg);
+            border: 2px solid var(--border-latte);
+            border-radius: 18px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-card-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+        }
+
+        .mobile-card-item i {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        .mobile-card-item span {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+
+        /* 4. الأعمدة الأربعة */
         .social-columns-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -392,7 +431,7 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
 
-        /* 4. المميزات */
+        /* 5. المميزات */
         .features-section {
             padding: 65px 5%;
             background-color: var(--latte-tint);
@@ -427,7 +466,7 @@
             font-weight: 800;
         }
 
-        /* 5. المنيو والمتجر */
+        /* 6. المنيو والمتجر */
         .container-section {
             max-width: 1100px;
             margin: 45px auto;
@@ -532,7 +571,7 @@
             background-color: var(--primary-hover);
         }
 
-        /* 6. الفوتر */
+        /* 7. الفوتر */
         footer {
             background-color: var(--footer-bg);
             color: #FFF3E0;
@@ -602,7 +641,7 @@
             font-weight: 800;
         }
 
-        /* 7. سلة المشتريات الجانبية */
+        /* 8. سلة المشتريات الجانبية */
         .cart-modal {
             position: fixed;
             top: 0;
@@ -686,7 +725,7 @@
 
         .toast-msg {
             position: fixed;
-            bottom: 80px;
+            bottom: 24px;
             right: 24px;
             background-color: var(--footer-bg);
             color: #FFF3E0;
@@ -707,78 +746,20 @@
             transform: translateY(0);
         }
 
-        /* التجاوب وإجبار شريط التنقل للسفل في الموبايل */
+        /* تعديلات الموبايل: إلغاء الشريط السفلي وإظهار كروت التنقل داخل المحتوى لتتحرك مع السكرول */
         @media (max-width: 900px) {
-            body {
-                padding-bottom: 70px !important;
-            }
-            header {
-                padding: 10px 4% !important;
-                position: fixed !important;
-                top: 0 !important;
-                bottom: auto !important;
-            }
             header nav {
-                position: fixed !important;
-                bottom: 0 !important;
-                top: auto !important;
-                left: 0 !important;
-                right: 0 !important;
-                width: 100% !important;
-                background-color: var(--nav-bg) !important;
-                border-top: 1px solid rgba(255, 243, 224, 0.15) !important;
-                padding: 8px 0 !important;
-                z-index: 9999 !important;
-                box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3) !important;
-                backdrop-filter: blur(10px) !important;
+                display: none !important; /* إلغاء القائمة القديمة من الهيدر */
             }
-            header nav ul {
-                width: 100% !important;
-                justify-content: space-around !important;
-                gap: 0 !important;
-            }
-            header nav ul li {
-                flex: 1 !important;
-                display: flex !important;
-                justify-content: center !important;
-            }
-            header nav ul li button {
-                flex-direction: column !important;
-                justify-content: center !important;
-                font-size: 11px !important;
-                padding: 4px !important;
-                gap: 4px !important;
-                width: 100% !important;
-                border-radius: 0 !important;
-            }
-            header nav ul li button i {
-                display: block !important;
-                font-size: 18px !important;
-            }
-            header nav ul li button:hover, header nav ul li button.active {
-                background: transparent !important;
-                color: #F39C12 !important;
-            }
-            main {
-                margin-top: 70px !important;
+            .mobile-cards-grid {
+                display: grid !important; /* إظهار شبكة الكروت في محتوى الصفحة */
             }
             .hero {
-                min-height: calc(100vh - 140px) !important;
-                padding: 35px 15px !important;
+                min-height: auto !important;
+                padding: 40px 15px !important;
             }
-            .hero-badge {
-                font-size: 12px !important;
-                padding: 6px 14px !important;
-            }
-            .hero h1 { font-size: 28px !important; }
-            .hero p { font-size: 15px !important; margin-bottom: 24px !important; }
-            .btn-primary {
-                padding: 12px 26px !important;
-                font-size: 16px !important;
-                width: 100% !important;
-                max-width: 280px !important;
-                justify-content: center !important;
-            }
+            .hero h1 { font-size: 26px !important; }
+            .hero p { font-size: 14px !important; margin-bottom: 20px !important; }
             .social-columns-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 12px !important;
@@ -799,13 +780,13 @@
                 min-width: 36px !important;
                 min-height: 36px !important;
             }
-            .hero h1 { font-size: 24px !important; }
+            .hero h1 { font-size: 22px !important; }
         }
     </style>
 </head>
 <body data-theme="light">
 
-    <!-- Header الهيدر واللوجو -->
+    <!-- Header الهيدر (يحتوي فقط على اللوجو وزر السلة والثيم واللغة بدون أي قوائم) -->
     <header>
         <div class="logo-container" onclick="switchView('home')">
             <div class="logo-icon-wrapper">
@@ -838,13 +819,12 @@
             </div>
         </div>
 
-        <!-- Navigation Bar (ثابت في أسفل الموبايل كـ Bottom Nav Bar) -->
+        <!-- القائمة الأصلية للشاشات الكبيرة -->
         <nav>
             <ul>
                 <li><button onclick="switchView('home')" id="nav-home" class="active"><i class="fa-solid fa-house"></i> <span id="nav-home-txt">الرئيسية</span></button></li>
                 <li><button onclick="switchView('menu')" id="nav-menu"><i class="fa-solid fa-mug-saucer"></i> <span id="nav-menu-txt">المنيو</span></button></li>
                 <li><button onclick="switchView('shop')" id="nav-shop"><i class="fa-solid fa-bag-shopping"></i> <span id="nav-shop-txt">اشتري القهوة</span></button></li>
-                <li><button onclick="toggleCart()"><i class="fa-solid fa-basket-shopping"></i> <span id="nav-cart-txt">السلة</span></button></li>
             </ul>
         </nav>
 
@@ -864,6 +844,18 @@
                     <h1 id="hero-title">استمتع بأجمل الأوقات وألذ المشروبات في okka</h1>
                     <p id="hero-desc">نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً مع أجود حبوب القهوة المحمصة خصيصاً لك.</p>
                     
+                    <!-- كروت التنقل الخاصة بالموبايل (تظهر كجزء من الشاشة وتتحرك مع التقليب/السكرول مثل Uni Market) -->
+                    <div class="mobile-cards-grid">
+                        <div class="mobile-card-item" onclick="switchView('menu')">
+                            <i class="fa-solid fa-mug-saucer"></i>
+                            <span id="card-menu-txt">قائمة المنيو</span>
+                        </div>
+                        <div class="mobile-card-item" onclick="switchView('shop')">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span id="card-shop-txt">اشتري القهوة</span>
+                        </div>
+                    </div>
+
                     <div class="hero-buttons">
                         <button onclick="switchView('menu')" class="btn-primary" id="btn-menu-link">
                             <i class="fa-solid fa-mug-saucer"></i> <span id="btn-menu-text">تصفح المنيو</span>
@@ -1049,14 +1041,10 @@
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('view-' + viewName).classList.add('active');
 
-            document.querySelectorAll('nav ul li button').forEach(el => el.classList.remove('active'));
-            if (viewName === 'home' && document.getElementById('nav-home')) document.getElementById('nav-home').classList.add('active');
-            if (viewName === 'menu' && document.getElementById('nav-menu')) {
-                document.getElementById('nav-menu').classList.add('active');
+            if (viewName === 'menu') {
                 renderMenu();
             }
-            if (viewName === 'shop' && document.getElementById('nav-shop')) {
-                document.getElementById('nav-shop').classList.add('active');
+            if (viewName === 'shop') {
                 renderShop();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1217,10 +1205,8 @@
                 html.setAttribute('dir', 'ltr');
                 langBtn.textContent = 'AR';
 
-                document.getElementById('nav-home-txt').textContent = 'Home';
-                document.getElementById('nav-menu-txt').textContent = 'Menu';
-                document.getElementById('nav-shop-txt').textContent = 'Buy Coffee';
-                if(document.getElementById('nav-cart-txt')) document.getElementById('nav-cart-txt').textContent = 'Cart';
+                if(document.getElementById('card-menu-txt')) document.getElementById('card-menu-txt').textContent = 'Menu';
+                if(document.getElementById('card-shop-txt')) document.getElementById('card-shop-txt').textContent = 'Buy Coffee';
                 document.getElementById('hero-badge').innerHTML = '<i class="fa-solid fa-mug-hot"></i> Welcome to your favorite specialty coffee spot';
                 document.getElementById('hero-title').textContent = 'Enjoy the best moments & finest drinks at okka';
                 document.getElementById('hero-desc').textContent = 'We serve delicious handcrafted drinks and daily fresh bakery with the finest specially roasted coffee beans.';
@@ -1252,10 +1238,8 @@
                 html.setAttribute('dir', 'rtl');
                 langBtn.textContent = 'EN';
 
-                document.getElementById('nav-home-txt').textContent = 'الرئيسية';
-                document.getElementById('nav-menu-txt').textContent = 'المنيو';
-                document.getElementById('nav-shop-txt').textContent = 'اشتري القهوة';
-                if(document.getElementById('nav-cart-txt')) document.getElementById('nav-cart-txt').textContent = 'السلة';
+                if(document.getElementById('card-menu-txt')) document.getElementById('card-menu-txt').textContent = 'قائمة المنيو';
+                if(document.getElementById('card-shop-txt')) document.getElementById('card-shop-txt').textContent = 'اشتري القهوة';
                 document.getElementById('hero-badge').innerHTML = '<i class="fa-solid fa-mug-hot"></i> مرحباً بك في وجهتك المفضلة للقهوة المختصة';
                 document.getElementById('hero-title').textContent = 'استمتع بأجمل الأوقات وألذ المشروبات في okka';
                 document.getElementById('hero-desc').textContent = 'نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً مع أجود حبوب القهوة المحمصة خصيصاً لك.';

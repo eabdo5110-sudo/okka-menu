@@ -334,36 +334,43 @@
     <!-- رسالة تنبيه عائمة -->
     <div id="admin-toast" class="fixed bottom-5 right-5 bg-[#3E2723] text-[#FFF3E0] px-6 py-3.5 rounded-xl shadow-2xl border border-[#E67E22] font-bold text-sm opacity-0 pointer-events-none transition-all duration-300 z-50"></div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <script>
+        // =========================================================================
+        // 1. إعدادات الربط السحابي (اختياري - لمزامنة التعديلات لجميع هواتف الزبائن)
+        // =========================================================================
+        const MY_FIREBASE_CONFIG = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'okka-coffee-live';
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'okka-coffee-default';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        let db = null;
         let isAuthenticated = false;
-
-        // طبقة تشفير Salted SHA-256 (لا يوجد نص صريح لاسم المستخدم أو كلمة المرور في الكود)
+        let categoriesList = [];
+        let productsList = [];
+        const LOCAL_STORAGE_DATA_KEY = "okka_store_data_v1";
         const CRYPTO_SALT = "OKKA_SEC_V2_99481_EG";
         const SESSION_STORAGE_KEY = "okka_admin_session_v1";
-        const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 ساعة كحد أقصى
-        let activeUserHash = "964d2ef639377bb2d0e72971c7c93e06d58f55be6b00f15a4bbda2f7687bd2ab";
-        let activePassHash = "921ef7a4b95cf84066d06b54f4bd600a71b5017c8949cd1c309b4b41e66f097f";
+        const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-        // حماية ضد هجمات التخمين المتكرر (Rate Limiting)
+        let activeUserHash = "";
+        let activePassHash = "";
         let failedAttempts = 0;
         let lockoutUntil = 0;
 
         async function hashWithSalt(rawText) {
             const salted = `${CRYPTO_SALT}::${rawText.trim()}`;
-            const msgBuffer = new TextEncoder().encode(salted);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            if (window.crypto && window.crypto.subtle) {
+                const msgBuffer = new TextEncoder().encode(salted);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+            // بديل آمن في حال فتح الملف عبر بروتوكول http غير مشفر
+            let hash = 0;
+            for (let i = 0; i < salted.length; i++) {
+                hash = ((hash << 5) - hash) + salted.charCodeAt(i);
+                hash |= 0;
+            }
+            return "fallback_" + Math.abs(hash).toString(16);
         }
 
-        // دالة تعقيم النصوص لمنع ثغرات XSS وحماية الصفحة من التعطل
         function sanitizeHTML(str) {
             if (typeof str !== 'string') return '';
             return str.replace(/[&<>"']/g, function(m) {
@@ -371,17 +378,32 @@
             });
         }
 
-        // التحقق من صلاحية الجلسة المحفوظة (بحد أقصى 24 ساعة)
+        function showAdminToast(msg) {
+            const t = document.getElementById('admin-toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.classList.remove('opacity-0');
+            setTimeout(() => t.classList.add('opacity-0'), 3200);
+        }
+
+        function togglePassVisibility() {
+            const inp = document.getElementById('admin-pass-input');
+            const eye = document.getElementById('pass-eye');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                eye.className = 'fa-solid fa-eye-slash';
+            } else {
+                inp.type = 'password';
+                eye.className = 'fa-solid fa-eye';
+            }
+        }
+
         async function restoreSavedSession() {
             try {
                 const rawSession = localStorage.getItem(SESSION_STORAGE_KEY);
                 if (!rawSession) return false;
                 const sessionData = JSON.parse(rawSession);
-                if (!sessionData || !sessionData.expiresAt || !sessionData.token) {
-                    localStorage.removeItem(SESSION_STORAGE_KEY);
-                    return false;
-                }
-                if (Date.now() > sessionData.expiresAt) {
+                if (!sessionData || !sessionData.expiresAt || !sessionData.token || Date.now() > sessionData.expiresAt) {
                     localStorage.removeItem(SESSION_STORAGE_KEY);
                     return false;
                 }
@@ -390,11 +412,11 @@
                     isAuthenticated = true;
                     document.getElementById('login-screen').classList.add('hidden');
                     document.getElementById('dashboard-screen').classList.remove('hidden');
+                    loadLocalFallbackData();
                     return true;
-                } else {
-                    localStorage.removeItem(SESSION_STORAGE_KEY);
-                    return false;
                 }
+                localStorage.removeItem(SESSION_STORAGE_KEY);
+                return false;
             } catch (e) {
                 localStorage.removeItem(SESSION_STORAGE_KEY);
                 return false;
@@ -406,57 +428,8 @@
                 const expiresAt = Date.now() + SESSION_MAX_AGE_MS;
                 const token = await hashWithSalt(`${activeUserHash}:${activePassHash}:${expiresAt}`);
                 localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ expiresAt, token }));
-            } catch (e) {
-                console.warn("Storage unavailable:", e);
-            }
+            } catch (e) { console.warn(e); }
         }
-
-        // تهيئة التجزئة المشفرة وفحص الجلسة عند التحميل
-        (async () => {
-            activeUserHash = await hashWithSalt("admin");
-            activePassHash = await hashWithSalt("okka2026");
-            const restored = await restoreSavedSession();
-            if (restored && db) {
-                startRealtimeListeners();
-            }
-        })();
-
-        if (firebaseConfig) {
-            try {
-                const app = initializeApp(firebaseConfig);
-                const auth = getAuth(app);
-                db = getFirestore(app);
-
-                (async () => {
-                    try {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                        const secDoc = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security'));
-                        if (secDoc.exists()) {
-                            if (secDoc.data().userHash) activeUserHash = secDoc.data().userHash;
-                            if (secDoc.data().passHash) activePassHash = secDoc.data().passHash;
-                        }
-                        if (!isAuthenticated) {
-                            await restoreSavedSession();
-                        }
-                        if (isAuthenticated) {
-                            startRealtimeListeners();
-                        }
-                    } catch (e) {
-                        console.warn("Running in resilient offline-safe mode:", e);
-                    }
-                })();
-            } catch (err) {
-                console.warn("Firebase fallback active:", err);
-            }
-        }
-
-        let categoriesList = [];
-        let productsList = [];
-        const LOCAL_STORAGE_DATA_KEY = "okka_store_data_v1";
 
         function loadLocalFallbackData() {
             try {
@@ -465,8 +438,16 @@
                     const parsed = JSON.parse(raw);
                     categoriesList = parsed.categories || [];
                     productsList = parsed.products || [];
-                    updateDashboardUI();
+                    if (parsed.settings && parsed.settings.forceStatus) {
+                        document.getElementById('set-force-status').value = parsed.settings.forceStatus;
+                        const mapLabel = { auto: 'تلقائي', open: 'مفتوح يدوياً', closed: 'مغلق يدوياً' };
+                        document.getElementById('stat-status').textContent = mapLabel[parsed.settings.forceStatus] || 'تلقائي';
+                    }
+                    if (parsed.settings && parsed.settings.whatsapp) {
+                        document.getElementById('set-whatsapp').value = parsed.settings.whatsapp;
+                    }
                 }
+                updateDashboardUI();
             } catch (e) { console.warn(e); }
         }
 
@@ -480,6 +461,9 @@
                     settings: extraSettings ? { ...(existing.settings || {}), ...extraSettings } : (existing.settings || {})
                 };
                 localStorage.setItem(LOCAL_STORAGE_DATA_KEY, JSON.stringify(payload));
+                if (window.syncToCloudIfAvailable) {
+                    window.syncToCloudIfAvailable(payload);
+                }
             } catch (e) { console.warn(e); }
         }
 
@@ -487,114 +471,17 @@
             document.getElementById('stat-cats').textContent = categoriesList.length;
             document.getElementById('stat-menu').textContent = productsList.filter(p => p.section === 'menu').length;
             document.getElementById('stat-shop').textContent = productsList.filter(p => p.section === 'shop').length;
-            window.updateCategoryDropdown();
+            updateCategoryDropdown();
             renderAdminCategories();
-            window.renderAdminProducts();
+            renderAdminProducts();
         }
 
-        window.showAdminToast = function(msg) {
-            const t = document.getElementById('admin-toast');
-            t.textContent = msg;
-            t.classList.remove('opacity-0');
-            setTimeout(() => t.classList.add('opacity-0'), 3200);
-        };
-
-        window.togglePassVisibility = function() {
-            const inp = document.getElementById('admin-pass-input');
-            const eye = document.getElementById('pass-eye');
-            if (inp.type === 'password') {
-                inp.type = 'text';
-                eye.className = 'fa-solid fa-eye-slash';
-            } else {
-                inp.type = 'password';
-                eye.className = 'fa-solid fa-eye';
-            }
-        };
-
-        // معالجة تسجيل الدخول مع الحماية ضد التخمين
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const errBox = document.getElementById('login-error');
-
-            if (Date.now() < lockoutUntil) {
-                const secs = Math.ceil((lockoutUntil - Date.now()) / 1000);
-                errBox.textContent = `تم إيقاف المحاولات مؤقتاً للحماية. انتظر ${secs} ثانية.`;
-                errBox.classList.remove('hidden');
+        // دالة استيراد الأصناف الافتراضية (تعمل فوراً دون انتظار أي مكتبات خارجية)
+        function seedInitialData() {
+            if (!isAuthenticated) {
+                showAdminToast("يرجى تسجيل الدخول أولاً");
                 return;
             }
-
-            const rawUser = document.getElementById('admin-user-input').value.trim().toLowerCase();
-            const rawPass = document.getElementById('admin-pass-input').value;
-
-            const inputUserHash = await hashWithSalt(rawUser);
-            const inputPassHash = await hashWithSalt(rawPass);
-
-            if (inputUserHash === activeUserHash && inputPassHash === activePassHash) {
-                failedAttempts = 0;
-                isAuthenticated = true;
-                if (document.getElementById('remember-24h').checked) {
-                    await saveSession24Hours();
-                } else {
-                    localStorage.removeItem(SESSION_STORAGE_KEY);
-                }
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
-                errBox.classList.add('hidden');
-                loadLocalFallbackData();
-                startRealtimeListeners();
-                window.showAdminToast("تم التحقق بنجاح! جلستك صالحة لمدة 24 ساعة");
-            } else {
-                failedAttempts++;
-                if (failedAttempts >= 5) {
-                    lockoutUntil = Date.now() + 60000; // حظر لمدة دقيقة بعد 5 محاولات خاطئة
-                    errBox.textContent = "تم قفل الدخول لمدة 60 ثانية بسبب تكرار المحاولات الخاطئة.";
-                } else {
-                    errBox.textContent = `بيانات الدخول غير صحيحة! (المتبقي ${5 - failedAttempts} محاولات)`;
-                }
-                errBox.classList.remove('hidden');
-            }
-        });
-
-        window.logoutAdmin = function() {
-            isAuthenticated = false;
-            localStorage.removeItem(SESSION_STORAGE_KEY);
-            document.getElementById('admin-user-input').value = '';
-            document.getElementById('admin-pass-input').value = '';
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden');
-        };
-
-        function startRealtimeListeners() {
-            loadLocalFallbackData();
-            if (!db || !isAuthenticated) return;
-
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'categories'), (snap) => {
-                categoriesList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                saveLocalFallbackData();
-                updateDashboardUI();
-            }, (err) => console.error(err));
-
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'products'), (snap) => {
-                productsList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                saveLocalFallbackData();
-                updateDashboardUI();
-            }, (err) => console.error(err));
-
-            onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'general'), (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.forceStatus) {
-                        document.getElementById('set-force-status').value = data.forceStatus;
-                        const mapLabel = { auto: 'تلقائي', open: 'مفتوح يدوياً', closed: 'مغلق يدوياً' };
-                        document.getElementById('stat-status').textContent = mapLabel[data.forceStatus] || 'تلقائي';
-                    }
-                    if (data.whatsapp) document.getElementById('set-whatsapp').value = data.whatsapp;
-                }
-            }, (err) => console.error(err));
-        }
-
-        window.seedInitialData = async function() {
-            if (!isAuthenticated) return;
             const defaultCats = [
                 { id: 'cat_hot', nameAr: 'مشروبات ساخنة', nameEn: 'Hot Drinks', section: 'menu' },
                 { id: 'cat_cold', nameAr: 'مشروبات مثلجة', nameEn: 'Cold Drinks', section: 'menu' },
@@ -609,29 +496,14 @@
                 { id: 'def_s2', section: 'shop', categoryId: 'cat_beans', nameAr: 'خليط إسبريسو مميز (500ج)', nameEn: 'Signature Espresso Blend (500g)', price: 450, available: true, img: 'https://images.unsplash.com/photo-1611854779393-1b2da9d401fe?auto=format&fit=crop&w=500&q=80' }
             ];
 
-            // تحديث فوري ومضمون على الجهاز
             categoriesList = [...defaultCats];
             productsList = [...defaultProds];
             saveLocalFallbackData();
             updateDashboardUI();
-            window.showAdminToast("تم استيراد التصنيفات والأصناف الافتراضية بنجاح!");
+            showAdminToast("تم استيراد التصنيفات والأصناف الافتراضية بنجاح!");
+        }
 
-            // المزامنة مع السحابة في الخلفية إن توفرت
-            if (db) {
-                try {
-                    for (const c of defaultCats) {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', c.id), { nameAr: c.nameAr, nameEn: c.nameEn, section: c.section });
-                    }
-                    for (const p of defaultProds) {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', p.id), p);
-                    }
-                } catch (e) {
-                    console.warn("Cloud sync skipped, using local storage:", e);
-                }
-            }
-        };
-
-        window.switchAdminTab = function(tabName) {
+        function switchAdminTab(tabName) {
             ['products', 'categories', 'settings'].forEach(t => {
                 document.getElementById('admin-tab-' + t).classList.add('hidden');
                 const btn = document.getElementById('tab-btn-' + t);
@@ -639,28 +511,23 @@
             });
             document.getElementById('admin-tab-' + tabName).classList.remove('hidden');
             document.getElementById('tab-btn-' + tabName).className = 'px-5 py-2.5 rounded-xl font-extrabold text-sm bg-[#E67E22] text-white shadow transition';
-        };
+        }
 
-        window.updateCategoryDropdown = function() {
+        function updateCategoryDropdown() {
             const sec = document.getElementById('prod-section').value;
             const select = document.getElementById('prod-category');
             const filtered = categoriesList.filter(c => c.section === sec);
 
             if (filtered.length === 0) {
-                select.innerHTML = `<option value="">-- أضف تصنيفاً أولاً من تبويب التصنيفات --</option>`;
+                select.innerHTML = `<option value="">-- أضف تصنيفاً أولاً أو اضغط استيراد --</option>`;
             } else {
                 select.innerHTML = filtered.map(c => `<option value="${sanitizeHTML(c.id)}">${sanitizeHTML(c.nameAr)} (${sanitizeHTML(c.nameEn)})</option>`).join('');
             }
-        };
+        }
 
-        window.handleImageUpload = function(event) {
+        function handleImageUpload(event) {
             const file = event.target.files[0];
-            if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                window.showAdminToast("يرجى اختيار ملف صورة صالح فقط!");
-                return;
-            }
-
+            if (!file || !file.type.startsWith('image/')) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -670,82 +537,31 @@
                     const scale = MAX_WIDTH / img.width;
                     canvas.width = img.width > MAX_WIDTH ? MAX_WIDTH : img.width;
                     canvas.height = img.width > MAX_WIDTH ? img.height * scale : img.height;
-
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
-
                     document.getElementById('prod-img-url').value = compressedDataUrl;
                     document.getElementById('prod-img-preview').src = compressedDataUrl;
-                    window.showAdminToast("تم ضغط الصورة وتجهيزها بأمان");
+                    showAdminToast("تم ضغط الصورة وتجهيزها بنجاح");
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
-        };
+        }
 
-        window.previewImageFromUrl = function() {
+        function previewImageFromUrl() {
             const url = document.getElementById('prod-img-url').value.trim();
             if (url && (url.startsWith('https://') || url.startsWith('http://') || url.startsWith('data:image/'))) {
                 document.getElementById('prod-img-preview').src = url;
             }
-        };
+        }
 
-        document.getElementById('product-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!isAuthenticated) return;
-
-            try {
-                const editId = document.getElementById('edit-product-id').value;
-                const priceVal = parseFloat(document.getElementById('prod-price').value);
-                if (isNaN(priceVal) || priceVal <= 0) {
-                    window.showAdminToast("يرجى إدخال سعر صحيح أكبر من الصفر");
-                    return;
-                }
-
-                const rawImg = document.getElementById('prod-img-url').value.trim();
-                const safeImg = (rawImg.startsWith('https://') || rawImg.startsWith('http://') || rawImg.startsWith('data:image/'))
-                    ? rawImg
-                    : 'https://placehold.co/500x350/FFF3E0/3E2723?text=okka+Coffee';
-
-                const payload = {
-                    section: document.getElementById('prod-section').value === 'shop' ? 'shop' : 'menu',
-                    categoryId: document.getElementById('prod-category').value,
-                    price: priceVal,
-                    nameAr: document.getElementById('prod-name-ar').value.trim(),
-                    nameEn: document.getElementById('prod-name-en').value.trim(),
-                    available: document.getElementById('prod-available').value === 'true',
-                    img: safeImg
-                };
-
-                const itemId = editId || ('prod_' + Date.now());
-                if (editId) {
-                    const idx = productsList.findIndex(p => p.id === editId);
-                    if (idx !== -1) productsList[idx] = { id: editId, ...payload };
-                    window.showAdminToast("تم تحديث بيانات الصنف بنجاح!");
-                } else {
-                    productsList.push({ id: itemId, ...payload });
-                    window.showAdminToast("تم إضافة الصنف الجديد ونشره بالموقع!");
-                }
-                saveLocalFallbackData();
-                updateDashboardUI();
-
-                if (db) {
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', itemId), payload);
-                }
-                window.resetProductForm();
-            } catch (err) {
-                console.warn(err);
-            }
-        });
-
-        window.editProduct = function(id) {
+        function editProduct(id) {
             const p = productsList.find(item => item.id === id);
             if (!p) return;
-
             document.getElementById('edit-product-id').value = p.id;
             document.getElementById('prod-section').value = p.section;
-            window.updateCategoryDropdown();
+            updateCategoryDropdown();
             document.getElementById('prod-category').value = p.categoryId || '';
             document.getElementById('prod-price').value = p.price;
             document.getElementById('prod-name-ar').value = p.nameAr;
@@ -753,37 +569,32 @@
             document.getElementById('prod-available').value = p.available !== false ? 'true' : 'false';
             document.getElementById('prod-img-url').value = p.img || '';
             document.getElementById('prod-img-preview').src = p.img || 'https://placehold.co/300x180/FFF3E0/3E2723?text=okka';
-
             document.getElementById('product-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> تعديل الصنف: ${sanitizeHTML(p.nameAr)}`;
             document.getElementById('save-prod-btn').innerHTML = `<i class="fa-solid fa-check"></i> حفظ التعديلات`;
             document.getElementById('cancel-edit-btn').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        }
 
-        window.resetProductForm = function() {
+        function resetProductForm() {
             document.getElementById('product-form').reset();
             document.getElementById('edit-product-id').value = '';
             document.getElementById('prod-img-preview').src = 'https://placehold.co/300x180/FFF3E0/3E2723?text=معاينة+الصورة';
             document.getElementById('product-form-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> إضافة صنف أو منتج جديد`;
             document.getElementById('save-prod-btn').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> حفظ الصنف ونشره بالموقع`;
             document.getElementById('cancel-edit-btn').classList.add('hidden');
-            window.updateCategoryDropdown();
-        };
+            updateCategoryDropdown();
+        }
 
-        window.deleteProduct = async function(id) {
+        function deleteProduct(id) {
             if (!isAuthenticated) return;
             productsList = productsList.filter(p => p.id !== id);
             saveLocalFallbackData();
             updateDashboardUI();
-            window.showAdminToast("تم حذف الصنف نهائياً");
-            if (db) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
-                } catch (e) { console.warn(e); }
-            }
-        };
+            showAdminToast("تم حذف الصنف نهائياً");
+            if (window.deleteCloudDoc) window.deleteCloudDoc('products', id);
+        }
 
-        window.renderAdminProducts = function() {
+        function renderAdminProducts() {
             const container = document.getElementById('admin-products-list');
             const query = document.getElementById('admin-search-prod').value.trim().toLowerCase();
             const secFilter = document.getElementById('admin-filter-sec').value;
@@ -795,7 +606,7 @@
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p class="col-span-full text-center text-[#8D6E63] py-6 font-bold">لا توجد أصناف مطابقة. يمكنك إضافة صنف جديد أو استيراد البيانات الافتراضية.</p>`;
+                container.innerHTML = `<p class="col-span-full text-center text-[#8D6E63] py-6 font-bold">لا توجد أصناف حالياً. اضغط على زر "استيراد الأصناف الافتراضية" بالأعلى.</p>`;
                 return;
             }
 
@@ -826,45 +637,16 @@
                     </div>
                 `;
             }).join('');
-        };
+        }
 
-        document.getElementById('category-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!isAuthenticated) return;
-
-            const newCat = {
-                id: 'cat_' + Date.now(),
-                section: document.getElementById('cat-section').value === 'shop' ? 'shop' : 'menu',
-                nameAr: document.getElementById('cat-name-ar').value.trim(),
-                nameEn: document.getElementById('cat-name-en').value.trim()
-            };
-            categoriesList.push(newCat);
-            saveLocalFallbackData();
-            updateDashboardUI();
-            document.getElementById('category-form').reset();
-            window.showAdminToast("تم إضافة التصنيف الجديد بنجاح!");
-
-            if (db) {
-                try {
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', newCat.id), {
-                        section: newCat.section, nameAr: newCat.nameAr, nameEn: newCat.nameEn
-                    });
-                } catch (err) { console.warn(err); }
-            }
-        });
-
-        window.deleteCategory = async function(id) {
+        function deleteCategory(id) {
             if (!isAuthenticated) return;
             categoriesList = categoriesList.filter(c => c.id !== id);
             saveLocalFallbackData();
             updateDashboardUI();
-            window.showAdminToast("تم حذف التصنيف");
-            if (db) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', id));
-                } catch (e) { console.warn(e); }
-            }
-        };
+            showAdminToast("تم حذف التصنيف");
+            if (window.deleteCloudDoc) window.deleteCloudDoc('categories', id);
+        }
 
         function renderAdminCategories() {
             const container = document.getElementById('admin-categories-list');
@@ -886,55 +668,202 @@
             `).join('');
         }
 
-        document.getElementById('settings-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!isAuthenticated) return;
-            const newSettings = {
-                forceStatus: document.getElementById('set-force-status').value,
-                whatsapp: document.getElementById('set-whatsapp').value.trim()
-            };
-            saveLocalFallbackData(newSettings);
-            const mapLabel = { auto: 'تلقائي', open: 'مفتوح يدوياً', closed: 'مغلق يدوياً' };
-            document.getElementById('stat-status').textContent = mapLabel[newSettings.forceStatus] || 'تلقائي';
-            window.showAdminToast("تم حفظ إعدادات الكافيه وتطبيقها فوراً!");
+        function logoutAdmin() {
+            isAuthenticated = false;
+            localStorage.removeItem(SESSION_STORAGE_KEY);
+            document.getElementById('admin-user-input').value = '';
+            document.getElementById('admin-pass-input').value = '';
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
 
-            if (db) {
-                try {
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'general'), newSettings, { merge: true });
-                } catch (err) { console.warn(err); }
+        // تهيئة مستمعي النماذج فوراً عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', async () => {
+            const savedCreds = localStorage.getItem("okka_admin_creds_v1");
+            if (savedCreds) {
+                const parsedCreds = JSON.parse(savedCreds);
+                activeUserHash = parsedCreds.userHash;
+                activePassHash = parsedCreds.passHash;
+            } else {
+                activeUserHash = await hashWithSalt("admin");
+                activePassHash = await hashWithSalt("okka2026");
             }
+            await restoreSavedSession();
+
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const errBox = document.getElementById('login-error');
+                if (Date.now() < lockoutUntil) {
+                    const secs = Math.ceil((lockoutUntil - Date.now()) / 1000);
+                    errBox.textContent = `تم إيقاف المحاولات مؤقتاً. انتظر ${secs} ثانية.`;
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+                const rawUser = document.getElementById('admin-user-input').value.trim().toLowerCase();
+                const rawPass = document.getElementById('admin-pass-input').value;
+                const inputUserHash = await hashWithSalt(rawUser);
+                const inputPassHash = await hashWithSalt(rawPass);
+
+                if (inputUserHash === activeUserHash && inputPassHash === activePassHash) {
+                    failedAttempts = 0;
+                    isAuthenticated = true;
+                    if (document.getElementById('remember-24h').checked) {
+                        await saveSession24Hours();
+                    }
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('dashboard-screen').classList.remove('hidden');
+                    errBox.classList.add('hidden');
+                    loadLocalFallbackData();
+                    showAdminToast("تم تسجيل الدخول بنجاح!");
+                } else {
+                    failedAttempts++;
+                    if (failedAttempts >= 5) {
+                        lockoutUntil = Date.now() + 60000;
+                        errBox.textContent = "تم قفل الدخول لمدة 60 ثانية بسبب تكرار المحاولات الخاطئة.";
+                    } else {
+                        errBox.textContent = `بيانات الدخول غير صحيحة! (المتبقي ${5 - failedAttempts} محاولات)`;
+                    }
+                    errBox.classList.remove('hidden');
+                }
+            });
+
+            document.getElementById('product-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!isAuthenticated) return;
+                const editId = document.getElementById('edit-product-id').value;
+                const priceVal = parseFloat(document.getElementById('prod-price').value);
+                if (isNaN(priceVal) || priceVal <= 0) return;
+
+                const rawImg = document.getElementById('prod-img-url').value.trim();
+                const safeImg = (rawImg.startsWith('https://') || rawImg.startsWith('http://') || rawImg.startsWith('data:image/'))
+                    ? rawImg : 'https://placehold.co/500x350/FFF3E0/3E2723?text=okka+Coffee';
+
+                const payload = {
+                    section: document.getElementById('prod-section').value === 'shop' ? 'shop' : 'menu',
+                    categoryId: document.getElementById('prod-category').value,
+                    price: priceVal,
+                    nameAr: document.getElementById('prod-name-ar').value.trim(),
+                    nameEn: document.getElementById('prod-name-en').value.trim(),
+                    available: document.getElementById('prod-available').value === 'true',
+                    img: safeImg
+                };
+
+                const itemId = editId || ('prod_' + Date.now());
+                if (editId) {
+                    const idx = productsList.findIndex(p => p.id === editId);
+                    if (idx !== -1) productsList[idx] = { id: editId, ...payload };
+                    showAdminToast("تم تحديث بيانات الصنف بنجاح!");
+                } else {
+                    productsList.push({ id: itemId, ...payload });
+                    showAdminToast("تم إضافة الصنف الجديد بنجاح!");
+                }
+                saveLocalFallbackData();
+                updateDashboardUI();
+                resetProductForm();
+            });
+
+            document.getElementById('category-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!isAuthenticated) return;
+                const newCat = {
+                    id: 'cat_' + Date.now(),
+                    section: document.getElementById('cat-section').value === 'shop' ? 'shop' : 'menu',
+                    nameAr: document.getElementById('cat-name-ar').value.trim(),
+                    nameEn: document.getElementById('cat-name-en').value.trim()
+                };
+                categoriesList.push(newCat);
+                saveLocalFallbackData();
+                updateDashboardUI();
+                document.getElementById('category-form').reset();
+                showAdminToast("تم إضافة التصنيف الجديد بنجاح!");
+            });
+
+            document.getElementById('settings-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!isAuthenticated) return;
+                const newSettings = {
+                    forceStatus: document.getElementById('set-force-status').value,
+                    whatsapp: document.getElementById('set-whatsapp').value.trim()
+                };
+                saveLocalFallbackData(newSettings);
+                const mapLabel = { auto: 'تلقائي', open: 'مفتوح يدوياً', closed: 'مغلق يدوياً' };
+                document.getElementById('stat-status').textContent = mapLabel[newSettings.forceStatus] || 'تلقائي';
+                showAdminToast("تم حفظ إعدادات الكافيه!");
+            });
+
+            document.getElementById('credentials-change-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!isAuthenticated) return;
+                const newUser = document.getElementById('new-admin-user').value.trim().toLowerCase();
+                const p1 = document.getElementById('new-admin-pass').value;
+                const p2 = document.getElementById('confirm-admin-pass').value;
+                if (p1 !== p2) {
+                    showAdminToast("كلمتا المرور غير متطابقتين!");
+                    return;
+                }
+                activeUserHash = await hashWithSalt(newUser);
+                activePassHash = await hashWithSalt(p1);
+                localStorage.setItem("okka_admin_creds_v1", JSON.stringify({ userHash: activeUserHash, passHash: activePassHash }));
+                await saveSession24Hours();
+                document.getElementById('credentials-change-form').reset();
+                showAdminToast("تم تشفير وحفظ بيانات الدخول الجديدة!");
+            });
         });
+    </script>
 
-        // تحديث وتشفير Username & Password معاً
-        document.getElementById('credentials-change-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!isAuthenticated) return;
+    <!-- وحدة المزامنة السحابية الاختيارية (لا تعطل الصفحة في حال عدم وجود اتصال Firebase) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-            const newUser = document.getElementById('new-admin-user').value.trim().toLowerCase();
-            const p1 = document.getElementById('new-admin-pass').value;
-            const p2 = document.getElementById('confirm-admin-pass').value;
+        if (MY_FIREBASE_CONFIG) {
+            try {
+                const app = initializeApp(MY_FIREBASE_CONFIG);
+                const auth = getAuth(app);
+                const db = getFirestore(app);
 
-            if (p1 !== p2) {
-                window.showAdminToast("كلمتا المرور غير متطابقتين!");
-                return;
+                (async () => {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+
+                    window.syncToCloudIfAvailable = async (payload) => {
+                        for (const c of (payload.categories || [])) {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', c.id), c);
+                        }
+                        for (const p of (payload.products || [])) {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', p.id), p);
+                        }
+                        if (payload.settings) {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'general'), payload.settings, { merge: true });
+                        }
+                    };
+
+                    window.deleteCloudDoc = async (colName, docId) => {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', colName, docId));
+                    };
+
+                    onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'categories'), (snap) => {
+                        if (!snap.empty) {
+                            categoriesList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            updateDashboardUI();
+                        }
+                    });
+
+                    onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'products'), (snap) => {
+                        if (!snap.empty) {
+                            productsList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            updateDashboardUI();
+                        }
+                    });
+                })();
+            } catch (e) {
+                console.warn("Cloud sync offline, local mode active.");
             }
-
-            const newUserHash = await hashWithSalt(newUser);
-            const newPassHash = await hashWithSalt(p1);
-            activeUserHash = newUserHash;
-            activePassHash = newPassHash;
-            await saveSession24Hours();
-
-            if (db) {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security'), {
-                    userHash: newUserHash,
-                    passHash: newPassHash
-                }, { merge: true });
-            }
-
-            document.getElementById('credentials-change-form').reset();
-            window.showAdminToast("تم تشفير وحفظ اسم المستخدم وكلمة المرور الجديدين بنجاح!");
-        });
+        }
     </script>
 </body>
 </html>

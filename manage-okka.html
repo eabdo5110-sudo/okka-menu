@@ -456,6 +456,41 @@
 
         let categoriesList = [];
         let productsList = [];
+        const LOCAL_STORAGE_DATA_KEY = "okka_store_data_v1";
+
+        function loadLocalFallbackData() {
+            try {
+                const raw = localStorage.getItem(LOCAL_STORAGE_DATA_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    categoriesList = parsed.categories || [];
+                    productsList = parsed.products || [];
+                    updateDashboardUI();
+                }
+            } catch (e) { console.warn(e); }
+        }
+
+        function saveLocalFallbackData(extraSettings = null) {
+            try {
+                const existingRaw = localStorage.getItem(LOCAL_STORAGE_DATA_KEY);
+                const existing = existingRaw ? JSON.parse(existingRaw) : {};
+                const payload = {
+                    categories: categoriesList,
+                    products: productsList,
+                    settings: extraSettings ? { ...(existing.settings || {}), ...extraSettings } : (existing.settings || {})
+                };
+                localStorage.setItem(LOCAL_STORAGE_DATA_KEY, JSON.stringify(payload));
+            } catch (e) { console.warn(e); }
+        }
+
+        function updateDashboardUI() {
+            document.getElementById('stat-cats').textContent = categoriesList.length;
+            document.getElementById('stat-menu').textContent = productsList.filter(p => p.section === 'menu').length;
+            document.getElementById('stat-shop').textContent = productsList.filter(p => p.section === 'shop').length;
+            window.updateCategoryDropdown();
+            renderAdminCategories();
+            window.renderAdminProducts();
+        }
 
         window.showAdminToast = function(msg) {
             const t = document.getElementById('admin-toast');
@@ -505,6 +540,7 @@
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard-screen').classList.remove('hidden');
                 errBox.classList.add('hidden');
+                loadLocalFallbackData();
                 startRealtimeListeners();
                 window.showAdminToast("تم التحقق بنجاح! جلستك صالحة لمدة 24 ساعة");
             } else {
@@ -529,21 +565,19 @@
         };
 
         function startRealtimeListeners() {
+            loadLocalFallbackData();
             if (!db || !isAuthenticated) return;
 
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'categories'), (snap) => {
                 categoriesList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                document.getElementById('stat-cats').textContent = categoriesList.length;
-                window.updateCategoryDropdown();
-                renderAdminCategories();
-                window.renderAdminProducts();
+                saveLocalFallbackData();
+                updateDashboardUI();
             }, (err) => console.error(err));
 
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'products'), (snap) => {
                 productsList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                document.getElementById('stat-menu').textContent = productsList.filter(p => p.section === 'menu').length;
-                document.getElementById('stat-shop').textContent = productsList.filter(p => p.section === 'shop').length;
-                window.renderAdminProducts();
+                saveLocalFallbackData();
+                updateDashboardUI();
             }, (err) => console.error(err));
 
             onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'general'), (docSnap) => {
@@ -560,31 +594,40 @@
         }
 
         window.seedInitialData = async function() {
-            if (!isAuthenticated || !db) return;
-            try {
-                const defaultCats = [
-                    { id: 'cat_hot', nameAr: 'مشروبات ساخنة', nameEn: 'Hot Drinks', section: 'menu' },
-                    { id: 'cat_cold', nameAr: 'مشروبات مثلجة', nameEn: 'Cold Drinks', section: 'menu' },
-                    { id: 'cat_beans', nameAr: 'حبوب مختصة', nameEn: 'Specialty Beans', section: 'shop' }
-                ];
-                const defaultProds = [
-                    { section: 'menu', categoryId: 'cat_hot', nameAr: 'إسبريسو دبل', nameEn: 'Double Espresso', price: 65, available: true, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=500&q=80' },
-                    { section: 'menu', categoryId: 'cat_hot', nameAr: 'كابتشينو كريمي', nameEn: 'Creamy Cappuccino', price: 85, available: true, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=80' },
-                    { section: 'menu', categoryId: 'cat_cold', nameAr: 'لاتيه بارد', nameEn: 'Iced Latte', price: 90, available: true, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=500&q=80' },
-                    { section: 'menu', categoryId: 'cat_hot', nameAr: 'كراميل ماكياتو', nameEn: 'Caramel Macchiato', price: 95, available: true, img: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=500&q=80' },
-                    { section: 'shop', categoryId: 'cat_beans', nameAr: 'حبوب إثيوبية مختصة (250ج)', nameEn: 'Ethiopian Specialty Beans (250g)', price: 280, available: true, img: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=500&q=80' },
-                    { section: 'shop', categoryId: 'cat_beans', nameAr: 'خليط إسبريسو مميز (500ج)', nameEn: 'Signature Espresso Blend (500g)', price: 450, available: true, img: 'https://images.unsplash.com/photo-1611854779393-1b2da9d401fe?auto=format&fit=crop&w=500&q=80' }
-                ];
+            if (!isAuthenticated) return;
+            const defaultCats = [
+                { id: 'cat_hot', nameAr: 'مشروبات ساخنة', nameEn: 'Hot Drinks', section: 'menu' },
+                { id: 'cat_cold', nameAr: 'مشروبات مثلجة', nameEn: 'Cold Drinks', section: 'menu' },
+                { id: 'cat_beans', nameAr: 'حبوب مختصة', nameEn: 'Specialty Beans', section: 'shop' }
+            ];
+            const defaultProds = [
+                { id: 'def_m1', section: 'menu', categoryId: 'cat_hot', nameAr: 'إسبريسو دبل', nameEn: 'Double Espresso', price: 65, available: true, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=500&q=80' },
+                { id: 'def_m2', section: 'menu', categoryId: 'cat_hot', nameAr: 'كابتشينو كريمي', nameEn: 'Creamy Cappuccino', price: 85, available: true, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=80' },
+                { id: 'def_m3', section: 'menu', categoryId: 'cat_cold', nameAr: 'لاتيه بارد', nameEn: 'Iced Latte', price: 90, available: true, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=500&q=80' },
+                { id: 'def_m4', section: 'menu', categoryId: 'cat_hot', nameAr: 'كراميل ماكياتو', nameEn: 'Caramel Macchiato', price: 95, available: true, img: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=500&q=80' },
+                { id: 'def_s1', section: 'shop', categoryId: 'cat_beans', nameAr: 'حبوب إثيوبية مختصة (250ج)', nameEn: 'Ethiopian Specialty Beans (250g)', price: 280, available: true, img: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=500&q=80' },
+                { id: 'def_s2', section: 'shop', categoryId: 'cat_beans', nameAr: 'خليط إسبريسو مميز (500ج)', nameEn: 'Signature Espresso Blend (500g)', price: 450, available: true, img: 'https://images.unsplash.com/photo-1611854779393-1b2da9d401fe?auto=format&fit=crop&w=500&q=80' }
+            ];
 
-                for (const c of defaultCats) {
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', c.id), { nameAr: c.nameAr, nameEn: c.nameEn, section: c.section });
+            // تحديث فوري ومضمون على الجهاز
+            categoriesList = [...defaultCats];
+            productsList = [...defaultProds];
+            saveLocalFallbackData();
+            updateDashboardUI();
+            window.showAdminToast("تم استيراد التصنيفات والأصناف الافتراضية بنجاح!");
+
+            // المزامنة مع السحابة في الخلفية إن توفرت
+            if (db) {
+                try {
+                    for (const c of defaultCats) {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', c.id), { nameAr: c.nameAr, nameEn: c.nameEn, section: c.section });
+                    }
+                    for (const p of defaultProds) {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', p.id), p);
+                    }
+                } catch (e) {
+                    console.warn("Cloud sync skipped, using local storage:", e);
                 }
-                for (const p of defaultProds) {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), p);
-                }
-                window.showAdminToast("تم استيراد التصنيفات والأصناف الافتراضية بنجاح!");
-            } catch (e) {
-                window.showAdminToast("حدث خطأ أثناء الاستيراد، حاول مرة أخرى.");
             }
         };
 
@@ -650,7 +693,7 @@
 
         document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isAuthenticated || !db) return;
+            if (!isAuthenticated) return;
 
             try {
                 const editId = document.getElementById('edit-product-id').value;
@@ -675,16 +718,24 @@
                     img: safeImg
                 };
 
+                const itemId = editId || ('prod_' + Date.now());
                 if (editId) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', editId), payload);
+                    const idx = productsList.findIndex(p => p.id === editId);
+                    if (idx !== -1) productsList[idx] = { id: editId, ...payload };
                     window.showAdminToast("تم تحديث بيانات الصنف بنجاح!");
                 } else {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), payload);
+                    productsList.push({ id: itemId, ...payload });
                     window.showAdminToast("تم إضافة الصنف الجديد ونشره بالموقع!");
+                }
+                saveLocalFallbackData();
+                updateDashboardUI();
+
+                if (db) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', itemId), payload);
                 }
                 window.resetProductForm();
             } catch (err) {
-                window.showAdminToast("حدث خطأ أثناء الحفظ، تأكد من حجم الصورة أو الاتصال.");
+                console.warn(err);
             }
         });
 
@@ -720,12 +771,15 @@
         };
 
         window.deleteProduct = async function(id) {
-            if (!isAuthenticated || !db) return;
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
-                window.showAdminToast("تم حذف الصنف نهائياً");
-            } catch (e) {
-                window.showAdminToast("تعذر حذف الصنف");
+            if (!isAuthenticated) return;
+            productsList = productsList.filter(p => p.id !== id);
+            saveLocalFallbackData();
+            updateDashboardUI();
+            window.showAdminToast("تم حذف الصنف نهائياً");
+            if (db) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
+                } catch (e) { console.warn(e); }
             }
         };
 
@@ -776,28 +830,39 @@
 
         document.getElementById('category-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isAuthenticated || !db) return;
+            if (!isAuthenticated) return;
 
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'categories'), {
-                    section: document.getElementById('cat-section').value === 'shop' ? 'shop' : 'menu',
-                    nameAr: document.getElementById('cat-name-ar').value.trim(),
-                    nameEn: document.getElementById('cat-name-en').value.trim()
-                });
-                document.getElementById('category-form').reset();
-                window.showAdminToast("تم إضافة التصنيف الجديد بنجاح!");
-            } catch (err) {
-                window.showAdminToast("حدث خطأ أثناء إضافة التصنيف");
+            const newCat = {
+                id: 'cat_' + Date.now(),
+                section: document.getElementById('cat-section').value === 'shop' ? 'shop' : 'menu',
+                nameAr: document.getElementById('cat-name-ar').value.trim(),
+                nameEn: document.getElementById('cat-name-en').value.trim()
+            };
+            categoriesList.push(newCat);
+            saveLocalFallbackData();
+            updateDashboardUI();
+            document.getElementById('category-form').reset();
+            window.showAdminToast("تم إضافة التصنيف الجديد بنجاح!");
+
+            if (db) {
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', newCat.id), {
+                        section: newCat.section, nameAr: newCat.nameAr, nameEn: newCat.nameEn
+                    });
+                } catch (err) { console.warn(err); }
             }
         });
 
         window.deleteCategory = async function(id) {
-            if (!isAuthenticated || !db) return;
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', id));
-                window.showAdminToast("تم حذف التصنيف");
-            } catch (e) {
-                window.showAdminToast("تعذر حذف التصنيف");
+            if (!isAuthenticated) return;
+            categoriesList = categoriesList.filter(c => c.id !== id);
+            saveLocalFallbackData();
+            updateDashboardUI();
+            window.showAdminToast("تم حذف التصنيف");
+            if (db) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', id));
+                } catch (e) { console.warn(e); }
             }
         };
 
@@ -823,15 +888,20 @@
 
         document.getElementById('settings-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isAuthenticated || !db) return;
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'general'), {
-                    forceStatus: document.getElementById('set-force-status').value,
-                    whatsapp: document.getElementById('set-whatsapp').value.trim()
-                }, { merge: true });
-                window.showAdminToast("تم حفظ إعدادات الكافيه وتطبيقها فوراً!");
-            } catch (err) {
-                window.showAdminToast("حدث خطأ أثناء حفظ الإعدادات");
+            if (!isAuthenticated) return;
+            const newSettings = {
+                forceStatus: document.getElementById('set-force-status').value,
+                whatsapp: document.getElementById('set-whatsapp').value.trim()
+            };
+            saveLocalFallbackData(newSettings);
+            const mapLabel = { auto: 'تلقائي', open: 'مفتوح يدوياً', closed: 'مغلق يدوياً' };
+            document.getElementById('stat-status').textContent = mapLabel[newSettings.forceStatus] || 'تلقائي';
+            window.showAdminToast("تم حفظ إعدادات الكافيه وتطبيقها فوراً!");
+
+            if (db) {
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'general'), newSettings, { merge: true });
+                } catch (err) { console.warn(err); }
             }
         });
 

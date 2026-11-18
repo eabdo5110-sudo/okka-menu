@@ -177,92 +177,6 @@
             min-height: 40px;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .logo-icon-wrapper {
-            width: 52px;
-            height: 52px;
-            background: #FFF3E0;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(230, 126, 34, 0.4);
-            padding: 3px;
-            overflow: hidden;
-            border: 2px solid var(--primary-color);
-        }
-
-        .logo-svg-img {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-        }
-
-        .logo-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 700;
-            color: #FFF3E0;
-            letter-spacing: 1px;
-            line-height: 1;
-        }
-
-        .logo-text span {
-            font-size: 11px;
-            color: #F39C12;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-            align-items: center;
-        }
-
-        nav ul li button {
-            background: none;
-            border: none;
-            color: var(--nav-text);
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 5px 0;
-        }
-
-        nav ul li button:hover, nav ul li button.active {
-            color: #F39C12;
-        }
-
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .control-btn {
-            background: rgba(255, 243, 224, 0.14);
-            border: 1px solid rgba(255, 243, 224, 0.2);
-            color: var(--nav-text);
-            padding: 8px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-        }
-
         .control-btn:hover {
             background: rgba(230, 126, 34, 0.35);
         }
@@ -888,19 +802,51 @@
                 padding-bottom: 72px;
             }
             header {
-                padding: 10px 4%;
+                padding: 8px 3.5%;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                gap: 6px;
+            }
+            .logo-icon-wrapper {
+                width: 40px;
+                height: 40px;
+            }
+            .logo-svg-img {
+                width: 34px;
+                height: 34px;
+            }
+            .logo-text h1 {
+                font-size: 20px;
+            }
+            .logo-text span {
+                font-size: 8.5px;
+                letter-spacing: 1px;
+            }
+            .nav-controls {
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+            }
+            .control-btn {
+                padding: 6px 9px;
+                min-width: 36px;
+                min-height: 36px;
+                font-size: 13px;
             }
             /* شريط تنقل سفلي ثابت على الهواتف فقط بتصميم عصري مطابق للصورة */
             nav {
                 position: fixed;
-                bottom: 0;
+                top: auto !important;
+                bottom: 0 !important;
                 left: 0;
+                right: 0;
                 width: 100%;
                 background-color: var(--card-bg);
                 border-top: 1px solid var(--border-latte);
                 padding: 6px 0 8px;
-                z-index: 1000;
-                box-shadow: 0 -4px 20px rgba(62, 39, 35, 0.12);
+                z-index: 1100;
+                box-shadow: 0 -4px 20px rgba(62, 39, 35, 0.14);
             }
             nav ul {
                 width: 100%;
@@ -944,10 +890,10 @@
                 border-radius: 0 0 4px 4px;
             }
             main {
-                margin-top: 68px;
+                margin-top: 62px;
             }
             .hero {
-                min-height: calc(100vh - 136px);
+                min-height: calc(100vh - 130px);
                 padding: 35px 15px;
             }
             .hero-badge {

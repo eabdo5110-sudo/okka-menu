@@ -65,6 +65,7 @@
             background-color: var(--nav-bg);
             color: var(--nav-text);
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             padding: 10px 4%;
@@ -72,6 +73,108 @@
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(62, 39, 35, 0.18);
             backdrop-filter: blur(8px);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon-wrapper {
+            width: 46px;
+            height: 46px;
+            background: #FFF3E0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(230, 126, 34, 0.4);
+            padding: 2px;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .logo-svg-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFF3E0;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .logo-text span {
+            font-size: 10px;
+            color: #F39C12;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: block;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav ul li button {
+            background: none;
+            border: none;
+            color: var(--nav-text);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        nav ul li button i {
+            display: none;
+        }
+
+        nav ul li button:hover, nav ul li button.active {
+            color: #F39C12;
+            background: rgba(255, 243, 224, 0.08);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn {
+            background: rgba(255, 243, 224, 0.14);
+            border: 1px solid rgba(255, 243, 224, 0.2);
+            color: var(--nav-text);
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            position: relative;
+            min-width: 40px;
+            min-height: 40px;
         }
 
         .logo-container {
@@ -94,7 +197,6 @@
             padding: 3px;
             overflow: hidden;
             border: 2px solid var(--primary-color);
-            flex-shrink: 0;
         }
 
         .logo-svg-img {
@@ -118,7 +220,6 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             font-weight: 700;
-            display: block;
         }
 
         nav ul {
@@ -136,13 +237,6 @@
             font-size: 16px;
             cursor: pointer;
             padding: 5px 0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        nav ul li button i {
-            display: none;
         }
 
         nav ul li button:hover, nav ul li button.active {
@@ -165,11 +259,8 @@
             font-weight: 700;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
             position: relative;
-            min-width: 40px;
-            min-height: 40px;
         }
 
         .control-btn:hover {
@@ -201,7 +292,7 @@
             display: block;
         }
 
-        /* 2. Hero Section */
+        /* 2. Hero Section مع تدرج Warm Latte Overlay برتقالي كريمي وصورة واجهة المقهى */
         .hero {
             position: relative;
             min-height: calc(100vh - 76px);
@@ -281,46 +372,7 @@
             transform: translateY(-3px);
         }
 
-        /* 3. شبكة الكروت التفاعلية في الموبايل (مثل Uni Market تتحرك مع السكرول) */
-        .mobile-cards-grid {
-            display: none; /* مخفية في الشاشات الكبيرة وتظهر في الموبايل */
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 25px 0;
-            padding: 0 10px;
-        }
-
-        .mobile-card-item {
-            background: var(--card-bg);
-            border: 2px solid var(--border-latte);
-            border-radius: 18px;
-            padding: 20px 15px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mobile-card-item:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary-color);
-        }
-
-        .mobile-card-item i {
-            font-size: 32px;
-            color: var(--primary-color);
-        }
-
-        .mobile-card-item span {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text-color);
-        }
-
-        /* 4. الأعمدة الأربعة */
+        /* 3. الأعمدة الأربعة: أزرار التواصل بألوانها الرسمية + مربع حالة الكافيه */
         .social-columns-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -359,16 +411,31 @@
             color: #ffffff;
         }
 
-        .btn-facebook { background-color: #1877F2; }
-        .btn-whatsapp { background-color: #25D366; }
-        .btn-maps { background-color: #EA4335; }
+        /* الألوان الرسمية لأزرار التواصل الاجتماعي */
+        .btn-facebook {
+            background-color: #1877F2;
+        }
 
+        .btn-whatsapp {
+            background-color: #25D366;
+        }
+
+        .btn-maps {
+            background-color: #EA4335;
+        }
+
+        /* مربع حالة الكافيه المخصص بالكامل */
         .cafe-status-card {
             background: rgba(255, 248, 238, 0.96);
             color: #3E2723;
             border: 2px solid #F5CBA7;
             cursor: default;
             padding: 18px 12px;
+        }
+
+        .cafe-status-card:hover {
+            transform: none;
+            filter: none;
         }
 
         .status-header-label {
@@ -431,7 +498,7 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
 
-        /* 5. المميزات */
+        /* 4. مميزات الموقع بخلفية Warm Latte فاتحة */
         .features-section {
             padding: 65px 5%;
             background-color: var(--latte-tint);
@@ -455,6 +522,10 @@
             border: 2px solid var(--border-latte);
         }
 
+        .feature-box:hover {
+            transform: translateY(-4px);
+        }
+
         .feature-box i {
             font-size: 40px;
             color: var(--primary-color);
@@ -466,7 +537,7 @@
             font-weight: 800;
         }
 
-        /* 6. المنيو والمتجر */
+        /* 5. المنيو والمتجر */
         .container-section {
             max-width: 1100px;
             margin: 45px auto;
@@ -482,6 +553,7 @@
             color: var(--primary-color);
         }
 
+        /* شريط البحث في المنيو */
         .search-bar-container {
             max-width: 500px;
             margin: 0 auto 30px;
@@ -501,6 +573,10 @@
             outline: none;
         }
 
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
         .search-icon {
             position: absolute;
             right: 18px;
@@ -511,13 +587,45 @@
             pointer-events: none;
         }
 
-        html[dir="ltr"] .search-input { padding: 14px 20px 14px 48px; }
-        html[dir="ltr"] .search-icon { right: auto; left: 18px; }
+        html[dir="ltr"] .search-input {
+            padding: 14px 20px 14px 48px;
+        }
+
+        html[dir="ltr"] .search-icon {
+            right: auto;
+            left: 18px;
+        }
 
         .grid-products {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 25px;
+        }
+
+        /* أزرار فلترة التصنيفات في المنيو */
+        .categories-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .cat-pill {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-latte);
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .cat-pill:hover, .cat-pill.active {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-color: var(--primary-color);
         }
 
         .product-card {
@@ -528,6 +636,10 @@
             border: 1px solid var(--border-latte);
             display: flex;
             flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
         }
 
         .product-img {
@@ -556,6 +668,18 @@
             margin-bottom: 15px;
         }
 
+        .product-cat-badge {
+            font-size: 11px;
+            background: var(--accent-color);
+            color: var(--text-color);
+            padding: 3px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            width: fit-content;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
         .add-to-cart-btn {
             margin-top: auto;
             background-color: var(--primary-color);
@@ -571,7 +695,7 @@
             background-color: var(--primary-hover);
         }
 
-        /* 7. الفوتر */
+        /* 6. الفوتر */
         footer {
             background-color: var(--footer-bg);
             color: #FFF3E0;
@@ -641,7 +765,11 @@
             font-weight: 800;
         }
 
-        /* 8. سلة المشتريات الجانبية */
+        .developer-credit a:hover {
+            color: #25D366;
+        }
+
+        /* 7. سلة المشتريات الجانبية */
         .cart-modal {
             position: fixed;
             top: 0;
@@ -658,7 +786,9 @@
             padding: 22px;
         }
 
-        .cart-modal.open { left: 0; }
+        .cart-modal.open {
+            left: 0;
+        }
 
         .cart-header {
             display: flex;
@@ -710,6 +840,10 @@
             margin-top: 10px;
         }
 
+        .checkout-whatsapp-btn:hover {
+            filter: brightness(1.06);
+        }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -721,8 +855,11 @@
             display: none;
         }
 
-        .overlay.show { display: block; }
+        .overlay.show {
+            display: block;
+        }
 
+        /* صندوق تنبيه أنيق بدلاً من alert() */
         .toast-msg {
             position: fixed;
             bottom: 24px;
@@ -746,47 +883,137 @@
             transform: translateY(0);
         }
 
-        /* تعديلات الموبايل: إلغاء الشريط السفلي وإظهار كروت التنقل داخل المحتوى لتتحرك مع السكرول */
         @media (max-width: 900px) {
-            header nav {
-                display: none !important; /* إلغاء القائمة القديمة من الهيدر */
+            body {
+                padding-bottom: 72px;
             }
-            .mobile-cards-grid {
-                display: grid !important; /* إظهار شبكة الكروت في محتوى الصفحة */
+            header {
+                padding: 10px 4%;
+            }
+            /* شريط تنقل سفلي ثابت على الهواتف فقط بتصميم عصري مطابق للصورة */
+            nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: var(--card-bg);
+                border-top: 1px solid var(--border-latte);
+                padding: 6px 0 8px;
+                z-index: 1000;
+                box-shadow: 0 -4px 20px rgba(62, 39, 35, 0.12);
+            }
+            nav ul {
+                width: 100%;
+                justify-content: space-around;
+                gap: 0;
+            }
+            nav ul li {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+            }
+            nav ul li button {
+                flex-direction: column;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 800;
+                padding: 4px 8px;
+                gap: 4px;
+                width: 100%;
+                border-radius: 0;
+                color: var(--text-color);
+                opacity: 0.7;
+                position: relative;
+            }
+            nav ul li button i {
+                display: block;
+                font-size: 19px;
+            }
+            nav ul li button:hover, nav ul li button.active {
+                background: transparent;
+                color: var(--primary-color);
+                opacity: 1;
+            }
+            nav ul li button.active::before {
+                content: '';
+                position: absolute;
+                top: -6px;
+                width: 32px;
+                height: 3px;
+                background-color: var(--primary-color);
+                border-radius: 0 0 4px 4px;
+            }
+            main {
+                margin-top: 68px;
             }
             .hero {
-                min-height: auto !important;
-                padding: 40px 15px !important;
+                min-height: calc(100vh - 136px);
+                padding: 35px 15px;
             }
-            .hero h1 { font-size: 26px !important; }
-            .hero p { font-size: 14px !important; margin-bottom: 20px !important; }
+            .hero-badge {
+                font-size: 12px;
+                padding: 6px 14px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .hero p {
+                font-size: 15px;
+                margin-bottom: 24px;
+            }
+            .btn-primary {
+                padding: 12px 26px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
             .social-columns-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 12px !important;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
             }
-            .social-col-card { padding: 16px 10px !important; }
-            .social-col-card i { font-size: 24px !important; }
-            .social-col-card span { font-size: 14px !important; }
-            #cafe-status-text { font-size: 16px !important; }
-            .features-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-            .section-title { font-size: 28px !important; }
-            .grid-products { grid-template-columns: 1fr !important; }
+            .social-col-card {
+                padding: 16px 10px;
+            }
+            .social-col-card i {
+                font-size: 24px;
+            }
+            .social-col-card span {
+                font-size: 14px;
+            }
+            #cafe-status-text {
+                font-size: 16px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .grid-products {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 380px) {
-            .logo-text span { display: none !important; }
-            .control-btn {
-                padding: 6px 10px !important;
-                min-width: 36px !important;
-                min-height: 36px !important;
+            .logo-text span {
+                display: none;
             }
-            .hero h1 { font-size: 22px !important; }
+            .control-btn {
+                padding: 6px 10px;
+                min-width: 36px;
+                min-height: 36px;
+            }
+            .hero h1 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body data-theme="light">
 
-    <!-- Header الهيدر (يحتوي فقط على اللوجو وزر السلة والثيم واللغة بدون أي قوائم) -->
+    <!-- Header الهيدر واللوجو -->
     <header>
         <div class="logo-container" onclick="switchView('home')">
             <div class="logo-icon-wrapper">
@@ -818,8 +1045,6 @@
                 <span>Coffee Shop & Cafe</span>
             </div>
         </div>
-
-        <!-- القائمة الأصلية للشاشات الكبيرة -->
         <nav>
             <ul>
                 <li><button onclick="switchView('home')" id="nav-home" class="active"><i class="fa-solid fa-house"></i> <span id="nav-home-txt">الرئيسية</span></button></li>
@@ -827,7 +1052,6 @@
                 <li><button onclick="switchView('shop')" id="nav-shop"><i class="fa-solid fa-bag-shopping"></i> <span id="nav-shop-txt">اشتري القهوة</span></button></li>
             </ul>
         </nav>
-
         <div class="nav-controls">
             <button class="control-btn" onclick="toggleCart()"><i class="fa-solid fa-basket-shopping"></i> <span class="cart-badge" id="cart-count">0</span></button>
             <button class="control-btn" id="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
@@ -844,25 +1068,13 @@
                     <h1 id="hero-title">استمتع بأجمل الأوقات وألذ المشروبات في okka</h1>
                     <p id="hero-desc">نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً مع أجود حبوب القهوة المحمصة خصيصاً لك.</p>
                     
-                    <!-- كروت التنقل الخاصة بالموبايل (تظهر كجزء من الشاشة وتتحرك مع التقليب/السكرول مثل Uni Market) -->
-                    <div class="mobile-cards-grid">
-                        <div class="mobile-card-item" onclick="switchView('menu')">
-                            <i class="fa-solid fa-mug-saucer"></i>
-                            <span id="card-menu-txt">قائمة المنيو</span>
-                        </div>
-                        <div class="mobile-card-item" onclick="switchView('shop')">
-                            <i class="fa-solid fa-bag-shopping"></i>
-                            <span id="card-shop-txt">اشتري القهوة</span>
-                        </div>
-                    </div>
-
                     <div class="hero-buttons">
                         <button onclick="switchView('menu')" class="btn-primary" id="btn-menu-link">
                             <i class="fa-solid fa-mug-saucer"></i> <span id="btn-menu-text">تصفح المنيو</span>
                         </button>
                     </div>
 
-                    <!-- الأعمدة الأربعة -->
+                    <!-- الأعمدة الأربعة: فيسبوك، واتساب، الموقع، ومربع حالة الكافيه -->
                     <div class="social-columns-grid">
                         <a href="https://www.facebook.com/Okkacoffe/" target="_blank" class="social-col-card btn-facebook">
                             <i class="fa-brands fa-facebook-f"></i>
@@ -916,12 +1128,14 @@
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 <input type="text" id="menu-search-input" class="search-input" placeholder="ابحث باسم المشروب..." oninput="renderMenu()">
             </div>
+            <div class="categories-filter" id="menu-categories-bar"></div>
             <div class="grid-products" id="menu-grid"></div>
         </section>
 
         <!-- 3. اشتري القهوة -->
         <section id="view-shop" class="view-section container-section">
             <h2 class="section-title" id="shop-sec-title">اشتري القهوة</h2>
+            <div class="categories-filter" id="shop-categories-bar"></div>
             <div class="grid-products" id="shop-grid"></div>
         </section>
     </main>
@@ -983,45 +1197,129 @@
     <!-- رسالة تنبيه مخصصة -->
     <div class="toast-msg" id="toast-msg"></div>
 
-    <script>
-        const menuItems = [
-            { id: 'm1', nameAr: 'إسبريسو دبل', nameEn: 'Double Espresso', price: 65, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=500&q=80' },
-            { id: 'm2', nameAr: 'كابتشينو كريمي', nameEn: 'Creamy Cappuccino', price: 85, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=80' },
-            { id: 'm3', nameAr: 'لاتيه بارد', nameEn: 'Iced Latte', price: 90, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=500&q=80' },
-            { id: 'm4', nameAr: 'كراميل ماكياتو', nameEn: 'Caramel Macchiato', price: 95, img: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=500&q=80' }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // تهيئة الاتصال السحابي المشترك مع لوحة الإدارة
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'okka-coffee-default';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        let db = null;
+
+        if (firebaseConfig) {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            db = getFirestore(app);
+
+            (async () => {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    subscribeToStoreData();
+                } catch (err) {
+                    console.error("Auth init error:", err);
+                }
+            })();
+        }
+
+        // البيانات الافتراضية في حال عدم وجود بيانات مضافة من الأدمن بعد
+        const defaultCategories = [
+            { id: 'cat_hot', nameAr: 'مشروبات ساخنة', nameEn: 'Hot Drinks', section: 'menu' },
+            { id: 'cat_cold', nameAr: 'مشروبات مثلجة', nameEn: 'Cold Drinks', section: 'menu' },
+            { id: 'cat_beans', nameAr: 'حبوب مختصة', nameEn: 'Specialty Beans', section: 'shop' }
         ];
 
-        const shopItems = [
-            { id: 's1', nameAr: 'حبوب إثيوبية مختصة (250ج)', nameEn: 'Ethiopian Specialty Beans (250g)', price: 280, img: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=500&q=80' },
-            { id: 's2', nameAr: 'خليط إسبريسو مميز (500ج)', nameEn: 'Signature Espresso Blend (500g)', price: 450, img: 'https://images.unsplash.com/photo-1611854779393-1b2da9d401fe?auto=format&fit=crop&w=500&q=80' },
-            { id: 's3', nameAr: 'بن كولومبي فاخر (250ج)', nameEn: 'Premium Colombian Beans (250g)', price: 310, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80' }
+        const defaultItems = [
+            { id: 'm1', section: 'menu', categoryId: 'cat_hot', nameAr: 'إسبريسو دبل', nameEn: 'Double Espresso', price: 65, available: true, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=500&q=80' },
+            { id: 'm2', section: 'menu', categoryId: 'cat_hot', nameAr: 'كابتشينو كريمي', nameEn: 'Creamy Cappuccino', price: 85, available: true, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=80' },
+            { id: 'm3', section: 'menu', categoryId: 'cat_cold', nameAr: 'لاتيه بارد', nameEn: 'Iced Latte', price: 90, available: true, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=500&q=80' },
+            { id: 'm4', section: 'menu', categoryId: 'cat_hot', nameAr: 'كراميل ماكياتو', nameEn: 'Caramel Macchiato', price: 95, available: true, img: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=500&q=80' },
+            { id: 's1', section: 'shop', categoryId: 'cat_beans', nameAr: 'حبوب إثيوبية مختصة (250ج)', nameEn: 'Ethiopian Specialty Beans (250g)', price: 280, available: true, img: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=500&q=80' },
+            { id: 's2', section: 'shop', categoryId: 'cat_beans', nameAr: 'خليط إسبريسو مميز (500ج)', nameEn: 'Signature Espresso Blend (500g)', price: 450, available: true, img: 'https://images.unsplash.com/photo-1611854779393-1b2da9d401fe?auto=format&fit=crop&w=500&q=80' },
+            { id: 's3', section: 'shop', categoryId: 'cat_beans', nameAr: 'بن كولومبي فاخر (250ج)', nameEn: 'Premium Colombian Beans (250g)', price: 310, available: true, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80' }
         ];
 
+        let allCategories = [...defaultCategories];
+        let allProducts = [...defaultItems];
+        let selectedMenuCat = 'all';
+        let selectedShopCat = 'all';
         let cart = [];
         let currentLang = 'ar';
+        let storeSettings = {
+            whatsapp: '201553748198',
+            phone: '015 53748198',
+            email: 'Aoka474@gmail.com',
+            forceStatus: 'auto' // auto | open | closed
+        };
 
-        function showToast(text) {
+        function subscribeToStoreData() {
+            if (!db) return;
+
+            // الاستماع الفوري للتصنيفات
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'categories'), (snap) => {
+                if (!snap.empty) {
+                    allCategories = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                } else {
+                    allCategories = [...defaultCategories];
+                }
+                renderMenu();
+                renderShop();
+            }, (err) => console.error(err));
+
+            // الاستماع الفوري للمنتجات والأصناف
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'products'), (snap) => {
+                if (!snap.empty) {
+                    allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                } else {
+                    allProducts = [...defaultItems];
+                }
+                renderMenu();
+                renderShop();
+            }, (err) => console.error(err));
+
+            // الاستماع الفوري لإعدادات الكافيه
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'settings'), (snap) => {
+                snap.forEach(docSnap => {
+                    if (docSnap.id === 'general') {
+                        storeSettings = { ...storeSettings, ...docSnap.data() };
+                        checkCafeStatus();
+                    }
+                });
+            }, (err) => console.error(err));
+        }
+
+        window.showToast = function(text) {
             const toast = document.getElementById('toast-msg');
             toast.textContent = text;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
-        }
+        };
 
-        function checkCafeStatus() {
-            const now = new Date();
-            const day = now.getDay();
-            const hour = now.getHours();
+        // التحقق من حالة الكافيه (تلقائي أو يدوي من الأدمن)
+        window.checkCafeStatus = function() {
             const indicator = document.getElementById('cafe-status-indicator');
             const statusText = document.getElementById('cafe-status-text');
-
             let isOpen = false;
 
-            if (day === 5) {
-                isOpen = (hour >= 13 && hour < 24);
-            } else if (day === 6) {
-                isOpen = (hour === 0) || (hour >= 7 && hour < 24);
+            if (storeSettings.forceStatus === 'open') {
+                isOpen = true;
+            } else if (storeSettings.forceStatus === 'closed') {
+                isOpen = false;
             } else {
-                isOpen = (hour >= 7 && hour < 24);
+                const now = new Date();
+                const day = now.getDay();
+                const hour = now.getHours();
+                if (day === 5) {
+                    isOpen = (hour >= 13 && hour < 24);
+                } else if (day === 6) {
+                    isOpen = (hour === 0) || (hour >= 7 && hour < 24);
+                } else {
+                    isOpen = (hour >= 7 && hour < 24);
+                }
             }
 
             if (isOpen) {
@@ -1033,47 +1331,83 @@
                 statusText.textContent = currentLang === 'ar' ? 'مغلق الآن' : 'Closed Now';
                 statusText.style.color = '#c0392b';
             }
-        }
-        setInterval(checkCafeStatus, 1000);
-        checkCafeStatus();
+        };
+        setInterval(window.checkCafeStatus, 1000);
+        window.checkCafeStatus();
 
-        function switchView(viewName) {
+        window.switchView = function(viewName) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('view-' + viewName).classList.add('active');
 
+            document.querySelectorAll('nav ul li button').forEach(el => el.classList.remove('active'));
+            if (viewName === 'home') document.getElementById('nav-home').classList.add('active');
             if (viewName === 'menu') {
-                renderMenu();
+                document.getElementById('nav-menu').classList.add('active');
+                window.renderMenu();
             }
             if (viewName === 'shop') {
-                renderShop();
+                document.getElementById('nav-shop').classList.add('active');
+                window.renderShop();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.selectMenuCategory = function(catId) {
+            selectedMenuCat = catId;
+            window.renderMenu();
+        };
+
+        window.selectShopCategory = function(catId) {
+            selectedShopCat = catId;
+            window.renderShop();
+        };
+
+        function getCategoryName(catId) {
+            const cat = allCategories.find(c => c.id === catId);
+            if (!cat) return '';
+            return currentLang === 'ar' ? cat.nameAr : (cat.nameEn || cat.nameAr);
         }
 
-        function renderMenu() {
+        window.renderMenu = function() {
             const grid = document.getElementById('menu-grid');
+            const catBar = document.getElementById('menu-categories-bar');
             const searchInput = document.getElementById('menu-search-input');
             const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
             const currency = currentLang === 'ar' ? 'ج.م' : 'EGP';
             const btnTxt = currentLang === 'ar' ? 'إضافة للسلة' : 'Add to Cart';
+            const allTxt = currentLang === 'ar' ? 'الكل' : 'All';
 
-            const filteredItems = menuItems.filter(item =>
-                item.nameAr.toLowerCase().includes(query) ||
-                item.nameEn.toLowerCase().includes(query)
-            );
+            const menuCats = allCategories.filter(c => c.section === 'menu');
+            catBar.innerHTML = `
+                <button class="cat-pill ${selectedMenuCat === 'all' ? 'active' : ''}" onclick="selectMenuCategory('all')">${allTxt}</button>
+                ${menuCats.map(c => `
+                    <button class="cat-pill ${selectedMenuCat === c.id ? 'active' : ''}" onclick="selectMenuCategory('${c.id}')">
+                        ${currentLang === 'ar' ? c.nameAr : (c.nameEn || c.nameAr)}
+                    </button>
+                `).join('')}
+            `;
+
+            const filteredItems = allProducts.filter(item => {
+                if (item.section !== 'menu' || item.available === false) return false;
+                const matchCat = selectedMenuCat === 'all' || item.categoryId === selectedMenuCat;
+                const matchSearch = (item.nameAr || '').toLowerCase().includes(query) || (item.nameEn || '').toLowerCase().includes(query);
+                return matchCat && matchSearch;
+            });
 
             if (filteredItems.length === 0) {
-                const noResText = currentLang === 'ar' ? 'لا يوجد مشروب بهذا الاسم' : 'No drinks found matching your search';
+                const noResText = currentLang === 'ar' ? 'لا يوجد مشروب مطابق حالياً' : 'No drinks found';
                 grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; opacity: 0.7; font-size: 18px; padding: 30px 0;">${noResText}</p>`;
                 return;
             }
 
             grid.innerHTML = filteredItems.map(item => {
-                const displayName = currentLang === 'ar' ? item.nameAr : item.nameEn;
+                const displayName = currentLang === 'ar' ? item.nameAr : (item.nameEn || item.nameAr);
+                const catLabel = getCategoryName(item.categoryId);
                 return `
                     <div class="product-card">
-                        <img src="${item.img}" class="product-img" alt="${displayName}">
+                        <img src="${item.img}" class="product-img" alt="${displayName}" onerror="this.src='https://placehold.co/500x350/FFF3E0/3E2723?text=okka+Coffee'">
                         <div class="product-body">
+                            ${catLabel ? `<span class="product-cat-badge">${catLabel}</span>` : ''}
                             <h3 class="product-title">${displayName}</h3>
                             <div class="product-price">${item.price} ${currency}</div>
                             <button class="add-to-cart-btn" onclick="addToCart('${item.id}')">${btnTxt}</button>
@@ -1081,19 +1415,44 @@
                     </div>
                 `;
             }).join('');
-        }
+        };
 
-        function renderShop() {
+        window.renderShop = function() {
             const grid = document.getElementById('shop-grid');
+            const catBar = document.getElementById('shop-categories-bar');
             const currency = currentLang === 'ar' ? 'ج.م' : 'EGP';
             const btnTxt = currentLang === 'ar' ? 'إضافة للسلة' : 'Add to Cart';
+            const allTxt = currentLang === 'ar' ? 'الكل' : 'All';
 
-            grid.innerHTML = shopItems.map(item => {
-                const displayName = currentLang === 'ar' ? item.nameAr : item.nameEn;
+            const shopCats = allCategories.filter(c => c.section === 'shop');
+            catBar.innerHTML = `
+                <button class="cat-pill ${selectedShopCat === 'all' ? 'active' : ''}" onclick="selectShopCategory('all')">${allTxt}</button>
+                ${shopCats.map(c => `
+                    <button class="cat-pill ${selectedShopCat === c.id ? 'active' : ''}" onclick="selectShopCategory('${c.id}')">
+                        ${currentLang === 'ar' ? c.nameAr : (c.nameEn || c.nameAr)}
+                    </button>
+                `).join('')}
+            `;
+
+            const filteredItems = allProducts.filter(item => {
+                if (item.section !== 'shop' || item.available === false) return false;
+                return selectedShopCat === 'all' || item.categoryId === selectedShopCat;
+            });
+
+            if (filteredItems.length === 0) {
+                const noResText = currentLang === 'ar' ? 'لا توجد منتجات في هذا القسم حالياً' : 'No products available';
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; opacity: 0.7; font-size: 18px; padding: 30px 0;">${noResText}</p>`;
+                return;
+            }
+
+            grid.innerHTML = filteredItems.map(item => {
+                const displayName = currentLang === 'ar' ? item.nameAr : (item.nameEn || item.nameAr);
+                const catLabel = getCategoryName(item.categoryId);
                 return `
                     <div class="product-card">
-                        <img src="${item.img}" class="product-img" alt="${displayName}">
+                        <img src="${item.img}" class="product-img" alt="${displayName}" onerror="this.src='https://placehold.co/500x350/FFF3E0/3E2723?text=okka+Beans'">
                         <div class="product-body">
+                            ${catLabel ? `<span class="product-cat-badge">${catLabel}</span>` : ''}
                             <h3 class="product-title">${displayName}</h3>
                             <div class="product-price">${item.price} ${currency}</div>
                             <button class="add-to-cart-btn" onclick="addToCart('${item.id}')">${btnTxt}</button>
@@ -1101,11 +1460,10 @@
                     </div>
                 `;
             }).join('');
-        }
+        };
 
-        function addToCart(itemId) {
-            const allItems = [...menuItems, ...shopItems];
-            const product = allItems.find(p => p.id === itemId);
+        window.addToCart = function(itemId) {
+            const product = allProducts.find(p => p.id === itemId);
             if (!product) return;
 
             const existing = cart.find(i => i.id === itemId);
@@ -1114,18 +1472,18 @@
             } else {
                 cart.push({ ...product, qty: 1 });
             }
-            updateCartUI();
+            window.updateCartUI();
             if (!document.getElementById('cart-modal').classList.contains('open')) {
-                toggleCart();
+                window.toggleCart();
             }
-        }
+        };
 
-        function removeItem(index) {
+        window.removeItem = function(index) {
             cart.splice(index, 1);
-            updateCartUI();
-        }
+            window.updateCartUI();
+        };
 
-        function updateCartUI() {
+        window.updateCartUI = function() {
             const countEl = document.getElementById('cart-count');
             const container = document.getElementById('cart-items-container');
             const totalEl = document.getElementById('cart-total');
@@ -1144,7 +1502,7 @@
             let totalPrice = 0;
             container.innerHTML = cart.map((item, index) => {
                 totalPrice += item.price * item.qty;
-                const displayName = currentLang === 'ar' ? item.nameAr : item.nameEn;
+                const displayName = currentLang === 'ar' ? item.nameAr : (item.nameEn || item.nameAr);
                 return `
                     <div class="cart-item-row">
                         <div>
@@ -1157,19 +1515,19 @@
             }).join('');
 
             totalEl.textContent = `${totalPrice} ${currency}`;
-        }
+        };
 
-        function toggleCart() {
+        window.toggleCart = function() {
             document.getElementById('cart-modal').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('show');
-        }
+        };
 
-        function checkoutWhatsApp() {
+        window.checkoutWhatsApp = function() {
             if (cart.length === 0) {
-                showToast(currentLang === 'ar' ? 'السلة فارغة! أضف بعض المنتجات أولاً.' : 'Your cart is empty! Please add items first.');
+                window.showToast(currentLang === 'ar' ? 'السلة فارغة! أضف بعض المنتجات أولاً.' : 'Your cart is empty! Please add items first.');
                 return;
             }
-            const phoneNumber = "201553748198";
+            const phoneNumber = storeSettings.whatsapp || "201553748198";
             let message = "مرحباً okka Coffee، أود طلب الآتي:\n\n";
             let total = 0;
 
@@ -1181,9 +1539,9 @@
 
             message += `\n*الإجمالي: ${total} ج.م*`;
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-        }
+        };
 
-        function toggleTheme() {
+        window.toggleTheme = function() {
             const body = document.body;
             const themeBtnIcon = document.querySelector('#theme-toggle i');
             if (body.getAttribute('data-theme') === 'light') {
@@ -1193,9 +1551,9 @@
                 body.setAttribute('data-theme', 'light');
                 themeBtnIcon.className = 'fa-solid fa-moon';
             }
-        }
+        };
 
-        function toggleLanguage() {
+        window.toggleLanguage = function() {
             const html = document.documentElement;
             const langBtn = document.getElementById('lang-toggle');
 
@@ -1205,8 +1563,9 @@
                 html.setAttribute('dir', 'ltr');
                 langBtn.textContent = 'AR';
 
-                if(document.getElementById('card-menu-txt')) document.getElementById('card-menu-txt').textContent = 'Menu';
-                if(document.getElementById('card-shop-txt')) document.getElementById('card-shop-txt').textContent = 'Buy Coffee';
+                document.getElementById('nav-home-txt').textContent = 'Home';
+                document.getElementById('nav-menu-txt').textContent = 'Menu';
+                document.getElementById('nav-shop-txt').textContent = 'Buy Coffee';
                 document.getElementById('hero-badge').innerHTML = '<i class="fa-solid fa-mug-hot"></i> Welcome to your favorite specialty coffee spot';
                 document.getElementById('hero-title').textContent = 'Enjoy the best moments & finest drinks at okka';
                 document.getElementById('hero-desc').textContent = 'We serve delicious handcrafted drinks and daily fresh bakery with the finest specially roasted coffee beans.';
@@ -1238,8 +1597,9 @@
                 html.setAttribute('dir', 'rtl');
                 langBtn.textContent = 'EN';
 
-                if(document.getElementById('card-menu-txt')) document.getElementById('card-menu-txt').textContent = 'قائمة المنيو';
-                if(document.getElementById('card-shop-txt')) document.getElementById('card-shop-txt').textContent = 'اشتري القهوة';
+                document.getElementById('nav-home-txt').textContent = 'الرئيسية';
+                document.getElementById('nav-menu-txt').textContent = 'المنيو';
+                document.getElementById('nav-shop-txt').textContent = 'اشتري القهوة';
                 document.getElementById('hero-badge').innerHTML = '<i class="fa-solid fa-mug-hot"></i> مرحباً بك في وجهتك المفضلة للقهوة المختصة';
                 document.getElementById('hero-title').textContent = 'استمتع بأجمل الأوقات وألذ المشروبات في okka';
                 document.getElementById('hero-desc').textContent = 'نقدم لك أشهى المشروبات المصنوعة بكل حب والمخبوزات الطازجة يومياً مع أجود حبوب القهوة المحمصة خصيصاً لك.';
@@ -1267,16 +1627,17 @@
                 document.getElementById('developer-credit').innerHTML = '<span>تصميم شركة الباشا</span><span>|</span><a href="tel:01025411955" dir="ltr"><i class="fa-solid fa-phone"></i> 01025411955</a>';
             }
 
-            checkCafeStatus();
-            renderMenu();
-            renderShop();
-            updateCartUI();
-        }
+            window.checkCafeStatus();
+            window.renderMenu();
+            window.renderShop();
+            window.updateCartUI();
+        };
 
+        // تحميل المنتجات تلقائياً عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', () => {
-            renderMenu();
-            renderShop();
-            checkCafeStatus();
+            window.renderMenu();
+            window.renderShop();
+            window.checkCafeStatus();
         });
     </script>
 </body>

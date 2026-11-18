@@ -58,6 +58,12 @@
                         </button>
                     </div>
                 </div>
+                <div class="flex items-center justify-between pt-1">
+                    <label class="inline-flex items-center gap-2 cursor-pointer text-xs font-bold text-[#5D4037]">
+                        <input type="checkbox" id="remember-24h" checked class="w-4 h-4 accent-[#E67E22] rounded">
+                        <span>تذكر تسجيل الدخول على هذا الجهاز لمدة 24 ساعة</span>
+                    </label>
+                </div>
                 <button type="submit" id="login-submit-btn" class="w-full bg-gradient-to-l from-[#E67E22] to-[#F39C12] hover:from-[#D35400] hover:to-[#E67E22] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-shield-halved"></i> دخول آمن للإدارة
                 </button>
@@ -340,6 +346,8 @@
 
         // طبقة تشفير Salted SHA-256 (لا يوجد نص صريح لاسم المستخدم أو كلمة المرور في الكود)
         const CRYPTO_SALT = "OKKA_SEC_V2_99481_EG";
+        const SESSION_STORAGE_KEY = "okka_admin_session_v1";
+        const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 ساعة كحد أقصى
         let activeUserHash = "964d2ef639377bb2d0e72971c7c93e06d58f55be6b00f15a4bbda2f7687bd2ab";
         let activePassHash = "921ef7a4b95cf84066d06b54f4bd600a71b5017c8949cd1c309b4b41e66f097f";
 
@@ -363,10 +371,54 @@
             });
         }
 
-        // تهيئة التجزئة المشفرة
+        // التحقق من صلاحية الجلسة المحفوظة (بحد أقصى 24 ساعة)
+        async function restoreSavedSession() {
+            try {
+                const rawSession = localStorage.getItem(SESSION_STORAGE_KEY);
+                if (!rawSession) return false;
+                const sessionData = JSON.parse(rawSession);
+                if (!sessionData || !sessionData.expiresAt || !sessionData.token) {
+                    localStorage.removeItem(SESSION_STORAGE_KEY);
+                    return false;
+                }
+                if (Date.now() > sessionData.expiresAt) {
+                    localStorage.removeItem(SESSION_STORAGE_KEY);
+                    return false;
+                }
+                const expectedToken = await hashWithSalt(`${activeUserHash}:${activePassHash}:${sessionData.expiresAt}`);
+                if (sessionData.token === expectedToken) {
+                    isAuthenticated = true;
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('dashboard-screen').classList.remove('hidden');
+                    return true;
+                } else {
+                    localStorage.removeItem(SESSION_STORAGE_KEY);
+                    return false;
+                }
+            } catch (e) {
+                localStorage.removeItem(SESSION_STORAGE_KEY);
+                return false;
+            }
+        }
+
+        async function saveSession24Hours() {
+            try {
+                const expiresAt = Date.now() + SESSION_MAX_AGE_MS;
+                const token = await hashWithSalt(`${activeUserHash}:${activePassHash}:${expiresAt}`);
+                localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ expiresAt, token }));
+            } catch (e) {
+                console.warn("Storage unavailable:", e);
+            }
+        }
+
+        // تهيئة التجزئة المشفرة وفحص الجلسة عند التحميل
         (async () => {
             activeUserHash = await hashWithSalt("admin");
             activePassHash = await hashWithSalt("okka2026");
+            const restored = await restoreSavedSession();
+            if (restored && db) {
+                startRealtimeListeners();
+            }
         })();
 
         if (firebaseConfig) {
@@ -386,6 +438,12 @@
                         if (secDoc.exists()) {
                             if (secDoc.data().userHash) activeUserHash = secDoc.data().userHash;
                             if (secDoc.data().passHash) activePassHash = secDoc.data().passHash;
+                        }
+                        if (!isAuthenticated) {
+                            await restoreSavedSession();
+                        }
+                        if (isAuthenticated) {
+                            startRealtimeListeners();
                         }
                     } catch (e) {
                         console.warn("Running in resilient offline-safe mode:", e);
@@ -439,11 +497,16 @@
             if (inputUserHash === activeUserHash && inputPassHash === activePassHash) {
                 failedAttempts = 0;
                 isAuthenticated = true;
+                if (document.getElementById('remember-24h').checked) {
+                    await saveSession24Hours();
+                } else {
+                    localStorage.removeItem(SESSION_STORAGE_KEY);
+                }
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard-screen').classList.remove('hidden');
                 errBox.classList.add('hidden');
                 startRealtimeListeners();
-                window.showAdminToast("تم التحقق بنجاح! أهلاً بك في إدارة okka Coffee");
+                window.showAdminToast("تم التحقق بنجاح! جلستك صالحة لمدة 24 ساعة");
             } else {
                 failedAttempts++;
                 if (failedAttempts >= 5) {
@@ -458,6 +521,7 @@
 
         window.logoutAdmin = function() {
             isAuthenticated = false;
+            localStorage.removeItem(SESSION_STORAGE_KEY);
             document.getElementById('admin-user-input').value = '';
             document.getElementById('admin-pass-input').value = '';
             document.getElementById('dashboard-screen').classList.add('hidden');
@@ -789,6 +853,7 @@
             const newPassHash = await hashWithSalt(p1);
             activeUserHash = newUserHash;
             activePassHash = newPassHash;
+            await saveSession24Hours();
 
             if (db) {
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security'), {
